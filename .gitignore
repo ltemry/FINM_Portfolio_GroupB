@@ -20,3 +20,5 @@ __pycache__/
 .DS_Store
 
 # Excel files 
+FINM Portfolio/*.xlsx
+!FINM Portfolio/barnstable_analysis_data.xlsx
