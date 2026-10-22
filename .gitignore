@@ -1,0 +1,22 @@
+# VS Code settings
+.vscode/
+
+# Conda / virtual environments
+.conda/
+env/
+venv/
+.venv/
+*.env
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Mac junk
+.DS_Store
+
+# Excel files 
