@@ -21,3 +21,4 @@ __pycache__/
 
 # Excel files 
 FINM Portfolio/*.xlsx
+!FINM Portfolio/dfa_analysis_data.xlsx
