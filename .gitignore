@@ -21,4 +21,3 @@ __pycache__/
 
 # Excel files 
 FINM Portfolio/*.xlsx
-!FINM Portfolio/barnstable_analysis_data.xlsx
