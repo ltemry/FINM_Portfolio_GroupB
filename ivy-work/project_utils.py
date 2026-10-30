@@ -364,3 +364,65 @@ def regime_difference(excess, regimes, good, bad, periods = 12):
     return pd.Series({"Mean Difference": (good_returns.mean() - bad_returns.mean()) * periods,
                       "t-stat": ttest_ind(good_returns, bad_returns, equal_var = False).statistic,
                       "Good Spells": ((in_good == 1) & (in_good.shift(fill_value = 0) == 0)).sum()})
+
+
+def trend_filtered_positions(returns, excess, weights, target_vol = 0.10, max_leverage = 2.0, window = 252, lookback = 252):
+    """
+    Month-end position targets, as fractions of net asset value. At each date in the index of `weights`, the weights
+    are scaled by L = min(target_vol / forecast volatility, max_leverage), the forecast using the sample covariance of
+    the trailing `window` daily returns. Any asset whose summed excess return over the trailing `lookback` days is
+    not positive is then set to zero, its share left in cash. lookback = None turns the filter off.
+    """
+    returns = returns[weights.columns].dropna()
+    excess = excess[weights.columns]
+
+    positions, leverage = {}, {}
+    for date, w in weights.iterrows():
+        trailing = returns.loc[:date].iloc[-window:]
+        forecast_vol = np.sqrt(w @ trailing.cov() @ w * 252)
+        leverage[date] = min(target_vol / forecast_vol, max_leverage)
+
+        in_trend = excess.loc[:date].iloc[-lookback:].sum() > 0 if lookback else pd.Series(True, index = w.index)
+        positions[date] = leverage[date] * w * in_trend
+
+    return pd.DataFrame(positions).T, pd.Series(leverage)
+
+
+def net_of_costs(gross, positions, turnover, cost_per_turnover, borrow_spread, periods = 252):
+    """
+    Daily returns net of trading and financing costs. Trading costs are cost_per_turnover times the one-way turnover
+    at each month-end reset, charged on the next day. Financing costs are borrow_spread a year on the borrowed amount,
+    the excess of gross exposure over net asset value, using the positions held at the start of each day.
+    """
+    borrowed = (positions.abs().sum(axis = 1) - 1).clip(lower = 0)
+    trading = turnover.reindex(gross.index).shift(1).fillna(0) * cost_per_turnover
+
+    return gross - borrowed * borrow_spread / periods - trading
+
+
+def criteria_check(returns, benchmark, rf, max_correlation = 0.80, periods = 252):
+    """
+    The four 7.1 criteria for one return series against a benchmark (60/40) over the dates where the series has returns:
+    Sharpe ratio above correlation x benchmark Sharpe, maximum drawdown no deeper than the benchmark's, 2022 calendar-year
+    return no worse than the benchmark's (blank if 2022 is not fully covered), and correlation at most max_correlation.
+    """
+    data = pd.concat([returns.rename("Series"), benchmark.rename("Benchmark")], axis = 1).dropna()
+    excess = data.sub(rf.loc[data.index], axis = 0)
+
+    sharpe = excess.mean() / excess.std() * np.sqrt(periods)
+    wealth = pd.concat([pd.DataFrame(1.0, index = [data.index[0] - pd.Timedelta(days = 1)], columns = data.columns), (1 + data).cumprod()])
+    drawdown = (wealth / wealth.cummax() - 1).min()
+    correlation = data["Series"].corr(data["Benchmark"])
+
+    has_2022 = data.index[0] <= pd.Timestamp("2022-01-03") and data.index[-1] >= pd.Timestamp("2022-12-30")
+    return_2022 = (1 + data.loc["2022"]).prod() - 1 if has_2022 else pd.Series(np.nan, index = data.columns)
+
+    return pd.Series({"Start": data.index[0], "End": data.index[-1],
+                      "Sharpe": sharpe["Series"], "Hurdle": correlation * sharpe["Benchmark"],
+                      "1. Sharpe": sharpe["Series"] > correlation * sharpe["Benchmark"],
+                      "Max Drawdown": drawdown["Series"], "60/40 Max Drawdown": drawdown["Benchmark"],
+                      "2. Drawdown": drawdown["Series"] >= drawdown["Benchmark"],
+                      "2022 Return": return_2022["Series"], "60/40 2022 Return": return_2022["Benchmark"],
+                      "3. 2022": return_2022["Series"] >= return_2022["Benchmark"] if has_2022 else np.nan,
+                      "Correlation": correlation,
+                      "4. Correlation": correlation <= max_correlation})
