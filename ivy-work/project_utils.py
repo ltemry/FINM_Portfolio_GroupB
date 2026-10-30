@@ -331,3 +331,36 @@ def breach_stats(returns, var, windows):
                                  "Breaches": (sample["Return"] < sample["VaR"]).sum() if len(sample) else np.nan,
                                  "Forecast Days": len(sample)}
                          for label, sample in samples.items()}).T
+
+
+def regime_stats(excess, regimes, periods = 12):
+    """
+    Annualized mean, volatility and Sharpe ratio of excess returns within each regime label in `regimes`, aligned
+    on dates; periods without both a return and a label are dropped.
+    """
+    data = pd.concat([excess.rename("Excess"), regimes.rename("Regime")], axis = 1).dropna()
+    grouped = data.groupby("Regime", observed = True)["Excess"]
+
+    mean, vol = annualize_stats(grouped.mean(), grouped.std(), periods = periods)
+
+    return pd.DataFrame({"Months": grouped.count(),
+                         "Annualized Mean": mean,
+                         "Annualized Volatility": vol,
+                         "Sharpe Ratio": mean / vol})
+
+
+def regime_difference(excess, regimes, good, bad, periods = 12):
+    """
+    Difference in annualized mean excess return between the `good` and `bad` regime labels, with its Welch t-statistic,
+    and the number of separate spells of the good regime (a run of consecutive periods counts once).
+    """
+    from scipy.stats import ttest_ind
+
+    data = pd.concat([excess.rename("Excess"), regimes.rename("Regime")], axis = 1).dropna()
+    good_returns = data.loc[data["Regime"] == good, "Excess"]
+    bad_returns = data.loc[data["Regime"] == bad, "Excess"]
+    in_good = (data["Regime"] == good).astype(int)
+
+    return pd.Series({"Mean Difference": (good_returns.mean() - bad_returns.mean()) * periods,
+                      "t-stat": ttest_ind(good_returns, bad_returns, equal_var = False).statistic,
+                      "Good Spells": ((in_good == 1) & (in_good.shift(fill_value = 0) == 0)).sum()})
