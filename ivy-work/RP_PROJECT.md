@@ -74,7 +74,7 @@ The full write-ups behind `risk-parity-project.ipynb`, with every table, printed
 > A fund that launched after a window opens starts later; mark it in the table.
 
 <table>
-  <caption>* launched after the window opens; statistics start at its first return</caption>
+  <caption>&#42; launched after the window opens; statistics start at its first return</caption>
   <thead>
     <tr>
       <th>&nbsp;</th>
@@ -3735,7 +3735,7 @@ Each panel has its own vertical scale.
 * **Gray bars:** daily returns.
 * **Lines:** each day's 5% VaR forecast, made with returns through the previous day. Orange is historical simulation, the 5th percentile of the last 252 returns. Blue is EWMA with a Normal distribution.
 * **Markers:** a breach, a return below that day's forecast. Orange triangles are historical breaches, blue dots EWMA breaches.
-* **Expected count:** a correct 5% forecast is breached about once every 20 days, about 2.5 times in the 51-day 2020 window and about 12.6 times in 2022.
+* **Expected count:** a correct 5% forecast is breached about once every 20 days, about 2.6 times in the 51-day 2020 window and about 12.6 times in 2022.
 * **`RPAR`, 2020:** there is no orange line because `RPAR` did not yet have 252 returns, so historical simulation had not started.
 
 *What to notice*
@@ -3943,7 +3943,7 @@ EWMA adapts faster than historical simulation, so it breached less in both episo
 
 * **Red taller than blue:** losses beyond VaR were bigger than the model predicted. The tail was fatter than Normal, or volatility rose faster than EWMA could follow.
 * **Diamond far above the bars:** one day did much of the damage.
-* **Breach counts:** compare them with the expected 2.5 in 2020 and 12.6 in 2022.
+* **Breach counts:** compare them with the expected 2.6 in 2020 and 12.6 in 2022.
 
 *What to notice*
 
