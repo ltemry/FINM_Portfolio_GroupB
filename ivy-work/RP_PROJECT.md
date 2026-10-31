@@ -1,7 +1,64 @@
 # Risk Parity Project: Extended Analysis
 
-The full write-ups behind `risk-parity-project.ipynb`. The notebook holds the concise answers; this file keeps the detailed reasoning, intermediate results and the guide to reading each figure. Numbers refer to the notebook's outputs.
+The full write-ups behind `risk-parity-project.ipynb`, with every table, printed result and figure from the notebook placed in its section. The notebook holds the concise answers; this file keeps the detailed reasoning, intermediate results and a guide to reading each figure. Figures are saved in `rp_project_figures/`.
 
+## Data Preview
+
+```text
+18 series, 2002-07-29 to 2026-10-23; yields to 2026-07-31
+```
+
+<table>
+  <caption>Available daily fund returns</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>First return</th>
+      <th>Last return</th>
+      <th>Daily observations</th>
+    </tr>
+    <tr>
+      <th>Fund</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>RPAR</th>
+      <td>2019-12-16</td>
+      <td>2026-10-23</td>
+      <td>1,723</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>2022-01-05</td>
+      <td>2026-10-23</td>
+      <td>1,205</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <td>2025-03-07</td>
+      <td>2026-10-23</td>
+      <td>411</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>2018-08-03</td>
+      <td>2026-10-23</td>
+      <td>2,053</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>2019-05-09</td>
+      <td>2026-10-23</td>
+      <td>1,876</td>
+    </tr>
+  </tbody>
+</table>
+
+![Chart](rp_project_figures/chart_1.png)
 
 # 1. The Products
 
@@ -16,6 +73,384 @@ The full write-ups behind `risk-parity-project.ipynb`. The notebook holds the co
 >
 > A fund that launched after a window opens starts later; mark it in the table.
 
+<table>
+  <caption>* launched after the window opens; statistics start at its first return</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>First Return</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Skewness</th>
+      <th>VaR (0.05)</th>
+      <th>CVaR (0.05)</th>
+      <th>Max Drawdown</th>
+      <th>Peak Date</th>
+      <th>Trough Date</th>
+      <th>Recovery Date</th>
+    </tr>
+    <tr>
+      <th>Window</th>
+      <th>Fund</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="7">2019-12-16 to 2026-10-23</th>
+      <th>RPAR</th>
+      <td>2019-12-16</td>
+      <td>4.32%</td>
+      <td>12.56%</td>
+      <td>0.13</td>
+      <td>-0.30</td>
+      <td>-1.26%</td>
+      <td>-1.84%</td>
+      <td>-30.14%</td>
+      <td>2021-11-09</td>
+      <td>2022-10-20</td>
+      <td>2026-01-26</td>
+    </tr>
+    <tr>
+      <th>UPAR*</th>
+      <td>2022-01-05</td>
+      <td>-0.36%</td>
+      <td>17.80%</td>
+      <td>-0.23</td>
+      <td>0.10</td>
+      <td>-1.80%</td>
+      <td>-2.60%</td>
+      <td>-38.97%</td>
+      <td>2022-01-12</td>
+      <td>2023-10-25</td>
+      <td>2026-02-23</td>
+    </tr>
+    <tr>
+      <th>ALLW*</th>
+      <td>2025-03-07</td>
+      <td>12.80%</td>
+      <td>12.10%</td>
+      <td>0.74</td>
+      <td>-0.48</td>
+      <td>-1.00%</td>
+      <td>-1.84%</td>
+      <td>-8.78%</td>
+      <td>2025-04-02</td>
+      <td>2025-04-08</td>
+      <td>2025-06-02</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>2019-12-16</td>
+      <td>13.25%</td>
+      <td>19.08%</td>
+      <td>0.55</td>
+      <td>-0.57</td>
+      <td>-1.80%</td>
+      <td>-2.85%</td>
+      <td>-31.34%</td>
+      <td>2021-12-27</td>
+      <td>2022-10-14</td>
+      <td>2024-06-12</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>2019-12-16</td>
+      <td>9.47%</td>
+      <td>12.46%</td>
+      <td>0.54</td>
+      <td>-0.60</td>
+      <td>-1.30%</td>
+      <td>-1.92%</td>
+      <td>-20.44%</td>
+      <td>2022-10-20</td>
+      <td>2023-03-24</td>
+      <td>2025-12-19</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>2019-12-16</td>
+      <td>9.69%</td>
+      <td>12.14%</td>
+      <td>0.57</td>
+      <td>-0.15</td>
+      <td>-1.11%</td>
+      <td>-1.80%</td>
+      <td>-21.02%</td>
+      <td>2021-12-27</td>
+      <td>2022-10-14</td>
+      <td>2024-02-22</td>
+    </tr>
+    <tr>
+      <th>static four-way</th>
+      <td>2019-12-16</td>
+      <td>11.01%</td>
+      <td>10.84%</td>
+      <td>0.77</td>
+      <td>-0.41</td>
+      <td>-1.07%</td>
+      <td>-1.62%</td>
+      <td>-18.00%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-04-08</td>
+    </tr>
+    <tr>
+      <th rowspan="7">2022-01-05 to 2026-10-23</th>
+      <th>RPAR</th>
+      <td>2022-01-05</td>
+      <td>0.92%</td>
+      <td>12.68%</td>
+      <td>-0.22</td>
+      <td>-0.01</td>
+      <td>-1.33%</td>
+      <td>-1.80%</td>
+      <td>-27.86%</td>
+      <td>2022-01-12</td>
+      <td>2022-10-20</td>
+      <td>2026-01-06</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>2022-01-05</td>
+      <td>-0.36%</td>
+      <td>17.80%</td>
+      <td>-0.23</td>
+      <td>0.10</td>
+      <td>-1.80%</td>
+      <td>-2.60%</td>
+      <td>-38.97%</td>
+      <td>2022-01-12</td>
+      <td>2023-10-25</td>
+      <td>2026-02-23</td>
+    </tr>
+    <tr>
+      <th>ALLW*</th>
+      <td>2025-03-07</td>
+      <td>12.80%</td>
+      <td>12.10%</td>
+      <td>0.74</td>
+      <td>-0.48</td>
+      <td>-1.00%</td>
+      <td>-1.84%</td>
+      <td>-8.78%</td>
+      <td>2025-04-02</td>
+      <td>2025-04-08</td>
+      <td>2025-06-02</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>2022-01-05</td>
+      <td>8.78%</td>
+      <td>17.41%</td>
+      <td>0.29</td>
+      <td>-0.07</td>
+      <td>-1.78%</td>
+      <td>-2.53%</td>
+      <td>-30.77%</td>
+      <td>2022-01-04</td>
+      <td>2022-10-14</td>
+      <td>2024-06-05</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>2022-01-05</td>
+      <td>10.51%</td>
+      <td>12.14%</td>
+      <td>0.55</td>
+      <td>-0.45</td>
+      <td>-1.20%</td>
+      <td>-1.81%</td>
+      <td>-20.44%</td>
+      <td>2022-10-20</td>
+      <td>2023-03-24</td>
+      <td>2025-12-19</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>2022-01-05</td>
+      <td>7.03%</td>
+      <td>11.14%</td>
+      <td>0.30</td>
+      <td>0.32</td>
+      <td>-1.09%</td>
+      <td>-1.59%</td>
+      <td>-20.64%</td>
+      <td>2022-01-04</td>
+      <td>2022-10-14</td>
+      <td>2024-02-07</td>
+    </tr>
+    <tr>
+      <th>static four-way</th>
+      <td>2022-01-05</td>
+      <td>9.57%</td>
+      <td>10.69%</td>
+      <td>0.55</td>
+      <td>-0.04</td>
+      <td>-1.06%</td>
+      <td>-1.52%</td>
+      <td>-18.00%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-04-08</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Calendar-year total returns, 2020 through 2026-10-23</caption>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>2020</th>
+      <th>2021</th>
+      <th>2022</th>
+      <th>2023</th>
+      <th>2024</th>
+      <th>2025</th>
+      <th>2026 YTD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>RPAR</th>
+      <td>19.40%</td>
+      <td>7.55%</td>
+      <td>-22.80%</td>
+      <td>6.03%</td>
+      <td>0.07%</td>
+      <td>17.91%</td>
+      <td>2.53%</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>—</td>
+      <td>—</td>
+      <td>-30.27%</td>
+      <td>5.73%</td>
+      <td>-2.24%</td>
+      <td>23.87%</td>
+      <td>2.06%</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>15.08%</td>
+      <td>5.78%</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>24.85%</td>
+      <td>22.20%</td>
+      <td>-25.84%</td>
+      <td>22.70%</td>
+      <td>20.20%</td>
+      <td>18.83%</td>
+      <td>8.71%</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>1.80%</td>
+      <td>11.38%</td>
+      <td>21.53%</td>
+      <td>-8.94%</td>
+      <td>7.25%</td>
+      <td>13.84%</td>
+      <td>18.22%</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>16.94%</td>
+      <td>15.09%</td>
+      <td>-16.38%</td>
+      <td>16.98%</td>
+      <td>14.24%</td>
+      <td>14.32%</td>
+      <td>6.32%</td>
+    </tr>
+    <tr>
+      <th>static four-way</th>
+      <td>15.07%</td>
+      <td>14.49%</td>
+      <td>-8.29%</td>
+      <td>8.99%</td>
+      <td>11.08%</td>
+      <td>22.51%</td>
+      <td>12.54%</td>
+    </tr>
+    <tr>
+      <th>SPY</th>
+      <td>18.37%</td>
+      <td>28.75%</td>
+      <td>-18.17%</td>
+      <td>26.19%</td>
+      <td>24.89%</td>
+      <td>17.72%</td>
+      <td>12.32%</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>18.15%</td>
+      <td>-4.60%</td>
+      <td>-31.24%</td>
+      <td>2.77%</td>
+      <td>-8.06%</td>
+      <td>4.25%</td>
+      <td>-3.42%</td>
+    </tr>
+    <tr>
+      <th>TIP</th>
+      <td>10.84%</td>
+      <td>5.67%</td>
+      <td>-12.24%</td>
+      <td>3.81%</td>
+      <td>1.65%</td>
+      <td>6.77%</td>
+      <td>-0.03%</td>
+    </tr>
+    <tr>
+      <th>GLD</th>
+      <td>24.81%</td>
+      <td>-4.15%</td>
+      <td>-0.77%</td>
+      <td>12.69%</td>
+      <td>26.66%</td>
+      <td>63.68%</td>
+      <td>-7.49%</td>
+    </tr>
+    <tr>
+      <th>DBC</th>
+      <td>-7.84%</td>
+      <td>41.36%</td>
+      <td>19.34%</td>
+      <td>-6.22%</td>
+      <td>2.18%</td>
+      <td>8.06%</td>
+      <td>52.50%</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Partial years: UPAR 2022 (from 2022-01-05); ALLW 2025 (from 2025-03-07)
+```
+
 ## 1.2
 
 > Regress `UPAR`'s daily excess return on `RPAR`'s over their common sample. Report
@@ -24,6 +459,149 @@ The full write-ups behind `risk-parity-project.ipynb`. The notebook holds the co
 > * the ratio of `UPAR`'s volatility to `RPAR`'s and the ratio of the two maximum drawdowns over the same sample
 >
 > The issuer describes `UPAR` as a more levered `RPAR`. What multiple do the data support, which of the statistics in 1.1 does it scale, and which does it leave where they were?
+
+```text
+Common sample: 2022-01-05 to 2026-10-23, 1,205 days
+```
+
+<table>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>UPAR on RPAR, daily excess returns</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Slope (beta on RPAR)</th>
+      <td>1.2964</td>
+    </tr>
+    <tr>
+      <th>Annualized Intercept</th>
+      <td>-0.45%</td>
+    </tr>
+    <tr>
+      <th>Alpha t-stat</th>
+      <td>-0.1433</td>
+    </tr>
+    <tr>
+      <th>R-squared</th>
+      <td>0.8499</td>
+    </tr>
+    <tr>
+      <th>Tracking Error</th>
+      <td>6.87%</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>RPAR and UPAR over the common sample</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>RPAR</th>
+      <th>UPAR</th>
+      <th>UPAR / RPAR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Annualized Excess Mean</th>
+      <td>-2.80%</td>
+      <td>-4.09%</td>
+      <td>1.46</td>
+    </tr>
+    <tr>
+      <th>Annualized Volatility</th>
+      <td>12.68%</td>
+      <td>17.80%</td>
+      <td>1.40</td>
+    </tr>
+    <tr>
+      <th>Sharpe Ratio</th>
+      <td>-0.22</td>
+      <td>-0.23</td>
+      <td>1.04</td>
+    </tr>
+    <tr>
+      <th>Skewness</th>
+      <td>-0.01</td>
+      <td>0.10</td>
+      <td>-7.24</td>
+    </tr>
+    <tr>
+      <th>VaR (0.05)</th>
+      <td>-1.33%</td>
+      <td>-1.80%</td>
+      <td>1.35</td>
+    </tr>
+    <tr>
+      <th>CVaR (0.05)</th>
+      <td>-1.80%</td>
+      <td>-2.60%</td>
+      <td>1.44</td>
+    </tr>
+    <tr>
+      <th>Max Drawdown</th>
+      <td>-27.86%</td>
+      <td>-38.97%</td>
+      <td>1.40</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>UPAR on RPAR by return horizon, non-overlapping excess returns</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Slope</th>
+      <th>Annualized Intercept</th>
+      <th>Alpha t-stat</th>
+      <th>R-squared</th>
+      <th>Tracking Error</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1 day</th>
+      <td>1.30</td>
+      <td>-0.45%</td>
+      <td>-0.14</td>
+      <td>0.85</td>
+      <td>6.87%</td>
+    </tr>
+    <tr>
+      <th>2 days</th>
+      <td>1.36</td>
+      <td>-0.30%</td>
+      <td>-0.15</td>
+      <td>0.94</td>
+      <td>4.40%</td>
+    </tr>
+    <tr>
+      <th>5 days</th>
+      <td>1.37</td>
+      <td>-0.24%</td>
+      <td>-0.14</td>
+      <td>0.95</td>
+      <td>3.76%</td>
+    </tr>
+    <tr>
+      <th>21 days</th>
+      <td>1.39</td>
+      <td>-0.24%</td>
+      <td>-0.32</td>
+      <td>0.99</td>
+      <td>1.63%</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Correlation of UPAR with RPAR's previous-day excess return: 0.09
+```
 
 **What multiple do the data support?** 
 About 1.4. Over the common sample (2022-01-05 to 2026-10-23), `UPAR`'s volatility is 1.40 times `RPAR`'s and its maximum drawdown is 1.40 times as deep, consistent with the issuer's 1.4 times the RPAR Index exposures. The daily slope is lower, 1.30 with $R^2$ = 0.85, but that is attenuation from daily timing noise rather than a lower multiple: `UPAR` still co-moves with `RPAR`'s previous day (correlation 0.09), and on non-overlapping 2-, 5- and 21-day returns the slope rises to 1.36, 1.37 and 1.39 with $R^2$ reaching 0.99. The intercept, −0.45% a year with a $t$-statistic of −0.14, is not distinguishable from zero; its sign is consistent with `UPAR`'s 0.16% higher expense ratio and any financing cost on the extra exposure.
@@ -34,9 +612,16 @@ Everything measured in units of return scales by roughly the multiple: the annua
 **Which it leaves where they were.** 
 Leverage changes scale, not shape or risk-adjusted return. The Sharpe ratio is unchanged (−0.22 against −0.23), and skewness stays close to zero for both. The drawdown peak is the same day for both funds (2022-01-12). But leverage does not simply scale the compounded path: `RPAR` bottomed on 2022-10-20, while `UPAR` kept falling to 2023-10-25 and recovered later (2026-02-23 against 2026-01-06), because volatility drag on a levered daily path compounds a negative excess return into a longer and deeper drawdown.
 
+**The tables.**
+
+* ***RPAR and UPAR over the common sample:*** puts the 1.1 statistics for both funds on the same dates, with their ratio. The 1.4x multiple and the unchanged Sharpe ratio come from here.
+* ***UPAR on RPAR by return horizon:*** our addition. It reruns the regression on 2-, 5- and 21-day returns to test whether the low daily slope is a real multiple or a timing artifact. As the horizon lengthens, the slope rises toward 1.4, so it is an artifact.
+
 ## 1.3
 
 > From Section 1 alone, write three claims an allocator could defend about how these products differ, each tied to a number in your tables, and name one claim about them you cannot test with these statistics.
+
+![Figure 1](rp_project_figures/figure_1.png)
 
 ### Reading Figure 1
 
@@ -53,6 +638,8 @@ Leverage changes scale, not shape or risk-adjusted return. The Sharpe ratio is u
 * **`NTSX`:** sits almost on 60/40's ray at about 1.6 times the volatility, which is what a levered 60/40 looks like.
 * **`RPAR` and `UPAR`:** `RPAR` sits on a much flatter ray (0.13), and `UPAR` is below zero.
 * **Asterisks:** these points start later. `ALLW*` covers about a year and a half, so its point is far less reliable than the others.
+
+![Figure 2](rp_project_figures/figure_2.png)
 
 ### Reading Figure 2
 
@@ -89,7 +676,6 @@ Over 2019-12-16 to 2026-10-23 the static four-way had a Sharpe ratio of 0.77 aga
 **A claim these statistics cannot test: `RPAR` balances risk across its four asset classes, "each at 25% of target risk."** 
 Every number in Section 1 comes from the fund's total return, so it shows how much risk `RPAR` carried and when it lost money, but not where the risk came from. Testing the claim needs the fund's exposures, from the factor decomposition in Section 2 or the issuer's holdings, and the risk contributions $w_i(\Sigma\boldsymbol{w})_i$ computed from them. A related caution: `ALLW`'s Sharpe ratio of 0.74 rests on 1.6 years of returns, and its standard error is roughly $\sqrt{1/1.6} \approx 0.78$, so Section 1 cannot tell it apart from zero.
 
-
 # 2. What They Hold
 
 Sections 2 and 3 use excess returns over `SHV`.
@@ -98,14 +684,359 @@ Sections 2 and 3 use excess returns over `SHV`.
 
 > Choose the factor set for the decompositions from `SPY`, `TLT`, `IEF`, `TIP`, `GLD` and `DBC`. State it and justify it in course terms, including whether both Treasury ETFs belong in one regression. Use the same set through Sections 2 and 3 unless a question asks otherwise.
 
+<table>
+  <caption>Correlations of daily excess returns over SHV</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th colspan="6">2007-01-12 to 2026-10-23</th>
+      <th colspan="6">RPAR's life</th>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>SPY</th>
+      <th>TLT</th>
+      <th>IEF</th>
+      <th>TIP</th>
+      <th>GLD</th>
+      <th>DBC</th>
+      <th>SPY</th>
+      <th>TLT</th>
+      <th>IEF</th>
+      <th>TIP</th>
+      <th>GLD</th>
+      <th>DBC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SPY</th>
+      <td>1.00</td>
+      <td>-0.30</td>
+      <td>-0.29</td>
+      <td>-0.10</td>
+      <td>0.07</td>
+      <td>0.40</td>
+      <td>1.00</td>
+      <td>-0.10</td>
+      <td>-0.06</td>
+      <td>0.11</td>
+      <td>0.15</td>
+      <td>0.29</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>-0.30</td>
+      <td>1.00</td>
+      <td>0.91</td>
+      <td>0.70</td>
+      <td>0.16</td>
+      <td>-0.24</td>
+      <td>-0.10</td>
+      <td>1.00</td>
+      <td>0.91</td>
+      <td>0.71</td>
+      <td>0.20</td>
+      <td>-0.17</td>
+    </tr>
+    <tr>
+      <th>IEF</th>
+      <td>-0.29</td>
+      <td>0.91</td>
+      <td>1.00</td>
+      <td>0.76</td>
+      <td>0.21</td>
+      <td>-0.21</td>
+      <td>-0.06</td>
+      <td>0.91</td>
+      <td>1.00</td>
+      <td>0.76</td>
+      <td>0.28</td>
+      <td>-0.14</td>
+    </tr>
+    <tr>
+      <th>TIP</th>
+      <td>-0.10</td>
+      <td>0.70</td>
+      <td>0.76</td>
+      <td>1.00</td>
+      <td>0.26</td>
+      <td>0.05</td>
+      <td>0.11</td>
+      <td>0.71</td>
+      <td>0.76</td>
+      <td>1.00</td>
+      <td>0.31</td>
+      <td>0.14</td>
+    </tr>
+    <tr>
+      <th>GLD</th>
+      <td>0.07</td>
+      <td>0.16</td>
+      <td>0.21</td>
+      <td>0.26</td>
+      <td>1.00</td>
+      <td>0.34</td>
+      <td>0.15</td>
+      <td>0.20</td>
+      <td>0.28</td>
+      <td>0.31</td>
+      <td>1.00</td>
+      <td>0.28</td>
+    </tr>
+    <tr>
+      <th>DBC</th>
+      <td>0.40</td>
+      <td>-0.24</td>
+      <td>-0.21</td>
+      <td>0.05</td>
+      <td>0.34</td>
+      <td>1.00</td>
+      <td>0.29</td>
+      <td>-0.17</td>
+      <td>-0.14</td>
+      <td>0.14</td>
+      <td>0.28</td>
+      <td>1.00</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Variance inflation factors, 1 / (1 - R-squared) of each factor on the others</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th colspan="3">2007-01-12 to 2026-10-23</th>
+      <th colspan="3">RPAR's life</th>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>All six factors</th>
+      <th>Without IEF</th>
+      <th>Without TLT</th>
+      <th>All six factors</th>
+      <th>Without IEF</th>
+      <th>Without TLT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SPY</th>
+      <td>1.3</td>
+      <td>1.3</td>
+      <td>1.3</td>
+      <td>1.1</td>
+      <td>1.1</td>
+      <td>1.1</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>6.1</td>
+      <td>2.4</td>
+      <td>—</td>
+      <td>6.0</td>
+      <td>2.5</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <th>IEF</th>
+      <td>7.4</td>
+      <td>—</td>
+      <td>3.0</td>
+      <td>7.1</td>
+      <td>—</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>TIP</th>
+      <td>2.7</td>
+      <td>2.2</td>
+      <td>2.7</td>
+      <td>2.9</td>
+      <td>2.5</td>
+      <td>2.9</td>
+    </tr>
+    <tr>
+      <th>GLD</th>
+      <td>1.3</td>
+      <td>1.2</td>
+      <td>1.3</td>
+      <td>1.2</td>
+      <td>1.2</td>
+      <td>1.2</td>
+    </tr>
+    <tr>
+      <th>DBC</th>
+      <td>1.5</td>
+      <td>1.5</td>
+      <td>1.5</td>
+      <td>1.4</td>
+      <td>1.3</td>
+      <td>1.4</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Treasury and TIPS betas, sum of betas and R-squared by factor menu, daily excess returns over each fund's life</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>TLT</th>
+      <th>IEF</th>
+      <th>TIP</th>
+      <th>Sum of Betas</th>
+      <th>R-squared</th>
+    </tr>
+    <tr>
+      <th>Fund</th>
+      <th>Menu</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="3">RPAR</th>
+      <th>All six factors</th>
+      <td>0.30</td>
+      <td>-0.00</td>
+      <td>0.54</td>
+      <td>1.39</td>
+      <td>0.865</td>
+    </tr>
+    <tr>
+      <th>Without IEF</th>
+      <td>0.30</td>
+      <td>—</td>
+      <td>0.54</td>
+      <td>1.39</td>
+      <td>0.865</td>
+    </tr>
+    <tr>
+      <th>Without TLT</th>
+      <td>—</td>
+      <td>0.56</td>
+      <td>0.63</td>
+      <td>1.70</td>
+      <td>0.839</td>
+    </tr>
+    <tr>
+      <th rowspan="3">UPAR</th>
+      <th>All six factors</th>
+      <td>0.54</td>
+      <td>-0.09</td>
+      <td>0.55</td>
+      <td>1.74</td>
+      <td>0.795</td>
+    </tr>
+    <tr>
+      <th>Without IEF</th>
+      <td>0.51</td>
+      <td>—</td>
+      <td>0.51</td>
+      <td>1.76</td>
+      <td>0.795</td>
+    </tr>
+    <tr>
+      <th>Without TLT</th>
+      <td>—</td>
+      <td>0.89</td>
+      <td>0.61</td>
+      <td>2.21</td>
+      <td>0.759</td>
+    </tr>
+    <tr>
+      <th rowspan="3">ALLW</th>
+      <th>All six factors</th>
+      <td>0.17</td>
+      <td>0.23</td>
+      <td>0.68</td>
+      <td>1.73</td>
+      <td>0.883</td>
+    </tr>
+    <tr>
+      <th>Without IEF</th>
+      <td>0.22</td>
+      <td>—</td>
+      <td>0.82</td>
+      <td>1.68</td>
+      <td>0.882</td>
+    </tr>
+    <tr>
+      <th>Without TLT</th>
+      <td>—</td>
+      <td>0.53</td>
+      <td>0.71</td>
+      <td>1.89</td>
+      <td>0.879</td>
+    </tr>
+    <tr>
+      <th rowspan="3">NTSX</th>
+      <th>All six factors</th>
+      <td>-0.02</td>
+      <td>0.48</td>
+      <td>0.01</td>
+      <td>1.38</td>
+      <td>0.933</td>
+    </tr>
+    <tr>
+      <th>Without IEF</th>
+      <td>0.13</td>
+      <td>—</td>
+      <td>0.14</td>
+      <td>1.18</td>
+      <td>0.928</td>
+    </tr>
+    <tr>
+      <th>Without TLT</th>
+      <td>—</td>
+      <td>0.44</td>
+      <td>0.00</td>
+      <td>1.36</td>
+      <td>0.933</td>
+    </tr>
+    <tr>
+      <th rowspan="3">DBMF</th>
+      <th>All six factors</th>
+      <td>0.32</td>
+      <td>-1.33</td>
+      <td>0.14</td>
+      <td>-0.55</td>
+      <td>0.239</td>
+    </tr>
+    <tr>
+      <th>Without IEF</th>
+      <td>-0.10</td>
+      <td>—</td>
+      <td>-0.22</td>
+      <td>0.00</td>
+      <td>0.158</td>
+    </tr>
+    <tr>
+      <th>Without TLT</th>
+      <td>—</td>
+      <td>-0.73</td>
+      <td>0.23</td>
+      <td>-0.21</td>
+      <td>0.211</td>
+    </tr>
+  </tbody>
+</table>
+
 **Factor set: `SPY`, `TLT`, `TIP`, `GLD`, `DBC`, with `IEF` dropped** 
-A factor decomposition needs regressors that each stand for a distinct, investable source of risk. Correlated regressors do not bias the fit, but they inflate the standard errors of the individual betas, so the regression can no longer say which exposure a fund holds. The five chosen ETFs are each a separate asset class these funds say they hold: equities (`SPY`), nominal Treasuries (`TLT`), inflation-linked bonds (`TIP`), gold (`GLD`) and broad commodities (`DBC`). They line up with `RPAR`'s index sleeves (global equities, Treasuries, TIPS, commodities) and with `ALLW`'s stated mandate (stocks, nominal bonds, inflation-linked bonds, commodities). They are also the five assets the risk-parity portfolios of Section 4 hold, so the betas here and the ERC weights in 4.4 are in the same units. Every variance inflation factor in the five-factor set is 2.5 or below.
+A factor decomposition needs regressors that each stand for a distinct, investable source of risk. Correlated regressors do not bias the fit, but they inflate the standard errors of the individual betas, so the regression can no longer say which exposure a fund holds. The five chosen ETFs are each a separate asset class these funds say they hold: equities (`SPY`), nominal Treasuries (`TLT`), inflation-linked bonds (`TIP`), gold (`GLD`) and broad commodities (`DBC`). They line up with `RPAR`'s index sleeves (global equities, Treasuries, TIPS, commodities) and with `ALLW`'s stated mandate (stocks, nominal bonds, inflation-linked bonds, commodities). They are also the five assets the risk-parity portfolios of Section 4 hold, so the betas here and the ERC weights in 4.4 are in the same units. Every variance inflation factor in the five-factor set is about 2.5 at most (2.51 for `TLT` and `TIP` over `RPAR`'s life).
 * **`TIP` stays despite a 0.70 correlation with `TLT`.** `TIP`'s return combines real-rate duration with breakeven inflation, and the part not explained by `TLT` is the inflation exposure, the largest sleeve of `RPAR`'s index (35%). Its VIF is 2.2 to 2.5, and `RPAR`'s `TIP` beta (0.54) is well identified.
 
 * **`GLD` and `DBC` stay together.** They correlate only 0.28 to 0.34, and they behaved differently when it mattered: `DBC` returned +19.3% in 2022 when `GLD` returned −0.8%, and `GLD` returned +63.7% in 2025 against `DBC`'s +8.1%.
 
 **Should both Treasury ETFs be in one regression? No.** 
-* **They are the same factor at two durations.** `TLT` and `IEF` correlate 0.91 over both samples. With both in, their VIFs rise from about 2.5 to 3 to 6 to 7, so the standard error of each Treasury beta grows by roughly $\sqrt{6/2.4} \approx 1.6$.
+* **They are the same factor at two durations.** `TLT` and `IEF` correlate 0.91 over both samples. With both in, their VIFs rise from about 2.4–3.0 to 6.1–7.4, so the standard error of each Treasury beta grows by roughly $\sqrt{6/2.4} \approx 1.6$.
 
 * **The second one adds no fit for the risk-parity funds.** With `TLT` already in, `RPAR`'s `IEF` beta is −0.00 and $R^2$ stays 0.865; `UPAR`'s $R^2$ stays 0.795.
 
@@ -117,6 +1048,18 @@ A factor decomposition needs regressors that each stand for a distinct, investab
 **Caveat for 2.4:** 
 The Treasury choice changes the sum of betas. `IEF` has less than half of `TLT`'s volatility (6.8% against 15.0% a year), so the same bond exposure takes a larger `IEF` beta: `RPAR`'s sum of betas is 1.39 with `TLT` and 1.70 with `IEF`.
 
+**The tables.**
+
+* ***Correlations of daily excess returns over `SHV`:*** the first screen for redundancy, over both the full sample and `RPAR`'s life to check the picture is stable.
+  * `TLT` and `IEF` correlate 0.91, the one pair close to being the same factor.
+  * `TIP`–`TLT` (0.70) and `GLD`–`DBC` (0.28–0.34) are distinct enough to keep.
+* ***Variance inflation factors:*** correlation looks at pairs; the VIF asks how well each factor is explained by all the others together. That is what inflates a beta's standard error, by a factor of $\sqrt{\text{VIF}}$.
+  * With both Treasuries in, their VIFs reach 6.1–7.4.
+  * Dropping `IEF` brings every VIF to about 2.5 at most (2.51 for `TLT` and `TIP` over `RPAR`'s life).
+* ***Treasury and TIPS betas, sum of betas and $R^2$ by factor menu:*** the practical test, whether the choice changes the fit or the betas of the actual funds.
+  * A second Treasury adds no $R^2$ for the risk-parity funds and creates `DBMF`'s offsetting long-short.
+  * `TLT` fits `RPAR` and `UPAR` better than `IEF` does.
+
 ## 2.2
 
 > Regress each of `RPAR`, `UPAR`, `ALLW`, `NTSX` and `DBMF` on your factor set over its full life, once with daily and once with monthly returns. Report
@@ -124,6 +1067,198 @@ The Treasury choice changes the sum of betas. `IEF` has less than half of `TLT`'
 > * the betas and their sum
 > * the annualized intercept with its $t$-statistic
 > * $R^2$ and the annualized tracking error
+
+<table>
+  <caption>Full-life regressions of fund excess returns on SPY, TLT, TIP, GLD and DBC excess returns over SHV</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>SPY</th>
+      <th>TLT</th>
+      <th>TIP</th>
+      <th>GLD</th>
+      <th>DBC</th>
+      <th>Sum of Betas</th>
+      <th>Annualized Intercept</th>
+      <th>Alpha t-stat</th>
+      <th>R-squared</th>
+      <th>Annualized Tracking Error</th>
+      <th>Start</th>
+      <th>Observations</th>
+    </tr>
+    <tr>
+      <th>Frequency</th>
+      <th>Fund</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5">Daily</th>
+      <th>RPAR</th>
+      <td>0.33</td>
+      <td>0.30</td>
+      <td>0.54</td>
+      <td>0.17</td>
+      <td>0.05</td>
+      <td>1.39</td>
+      <td>-3.55%</td>
+      <td>-2.01</td>
+      <td>0.86</td>
+      <td>4.61%</td>
+      <td>2019-12-16</td>
+      <td>1,723</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>0.43</td>
+      <td>0.51</td>
+      <td>0.51</td>
+      <td>0.23</td>
+      <td>0.08</td>
+      <td>1.76</td>
+      <td>-4.68%</td>
+      <td>-1.27</td>
+      <td>0.79</td>
+      <td>8.04%</td>
+      <td>2022-01-05</td>
+      <td>1,205</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <td>0.37</td>
+      <td>0.22</td>
+      <td>0.82</td>
+      <td>0.19</td>
+      <td>0.07</td>
+      <td>1.68</td>
+      <td>-0.25%</td>
+      <td>-0.08</td>
+      <td>0.88</td>
+      <td>4.15%</td>
+      <td>2025-03-07</td>
+      <td>411</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>0.91</td>
+      <td>0.13</td>
+      <td>0.14</td>
+      <td>0.03</td>
+      <td>-0.03</td>
+      <td>1.18</td>
+      <td>-0.86%</td>
+      <td>-0.51</td>
+      <td>0.93</td>
+      <td>4.85%</td>
+      <td>2018-08-03</td>
+      <td>2,053</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>0.06</td>
+      <td>-0.10</td>
+      <td>-0.22</td>
+      <td>0.11</td>
+      <td>0.15</td>
+      <td>0.00</td>
+      <td>2.95%</td>
+      <td>0.71</td>
+      <td>0.16</td>
+      <td>11.35%</td>
+      <td>2019-05-09</td>
+      <td>1,876</td>
+    </tr>
+    <tr>
+      <th rowspan="5">Monthly</th>
+      <th>RPAR</th>
+      <td>0.31</td>
+      <td>0.39</td>
+      <td>0.55</td>
+      <td>0.17</td>
+      <td>0.10</td>
+      <td>1.53</td>
+      <td>-3.00%</td>
+      <td>-2.30</td>
+      <td>0.95</td>
+      <td>2.98%</td>
+      <td>2020-01-31</td>
+      <td>81</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>0.43</td>
+      <td>0.62</td>
+      <td>0.64</td>
+      <td>0.24</td>
+      <td>0.11</td>
+      <td>2.04</td>
+      <td>-2.93%</td>
+      <td>-1.16</td>
+      <td>0.95</td>
+      <td>4.27%</td>
+      <td>2022-02-28</td>
+      <td>56</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <td>0.20</td>
+      <td>0.24</td>
+      <td>1.11</td>
+      <td>0.19</td>
+      <td>0.08</td>
+      <td>1.82</td>
+      <td>5.17%</td>
+      <td>3.17</td>
+      <td>0.99</td>
+      <td>1.23%</td>
+      <td>2025-04-30</td>
+      <td>18</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>0.89</td>
+      <td>0.15</td>
+      <td>0.23</td>
+      <td>0.00</td>
+      <td>-0.03</td>
+      <td>1.24</td>
+      <td>-0.02%</td>
+      <td>-0.03</td>
+      <td>0.99</td>
+      <td>1.50%</td>
+      <td>2018-09-30</td>
+      <td>97</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>0.02</td>
+      <td>-0.05</td>
+      <td>-0.79</td>
+      <td>0.17</td>
+      <td>0.08</td>
+      <td>-0.57</td>
+      <td>2.89%</td>
+      <td>0.67</td>
+      <td>0.17</td>
+      <td>10.28%</td>
+      <td>2019-06-30</td>
+      <td>88</td>
+    </tr>
+  </tbody>
+</table>
 
 **Notes on the table:** 
 * **Monthly betas are larger than daily for the risk-parity funds.** `RPAR`'s sum of betas is 1.39 daily and 1.53 monthly, `UPAR`'s 1.76 and 2.04, and `ALLW`'s 1.68 and 1.82; $R^2$ rises from 0.79–0.88 to 0.95–0.99. As with `UPAR` on `RPAR` in 1.2, differences in closing times between the funds and the factor ETFs attenuate daily betas, and the attenuation fades as returns are summed over a month.
@@ -139,6 +1274,8 @@ The Treasury choice changes the sum of betas. `IEF` has less than half of `TLT`'
 > Repeat the daily regression on a trailing 252-day window, stepped forward 21 trading days at a time.
 >
 > * Plot each fund's betas, $R^2$ and sum of betas through time, and report the range of each.
+
+![Figure 3](rp_project_figures/figure_3.png)
 
 ### Reading Figure 3
 
@@ -168,6 +1305,133 @@ The Treasury choice changes the sum of betas. `IEF` has less than half of `TLT`'
 * **Too short to judge:** `ALLW` has 8 windows and `UPAR` 46, against 71 to 86 for the others, so their ranges cover far fewer market conditions.
 * **A caution on the sum of betas:** it measures net fitted exposure in units of the chosen ETFs, not leverage (2.4). When two correlated factors trade off, as `TLT` and `TIP` do, the sum can move without the fund's holdings changing.
 
+<table>
+  <caption>Range of trailing 252-day betas, sum of betas and R-squared across windows</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th colspan="2">SPY</th>
+      <th colspan="2">TLT</th>
+      <th colspan="2">TIP</th>
+      <th colspan="2">GLD</th>
+      <th colspan="2">DBC</th>
+      <th colspan="2">Sum of Betas</th>
+      <th colspan="2">R-squared</th>
+      <th>Windows</th>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>min</th>
+      <th>max</th>
+      <th>min</th>
+      <th>max</th>
+      <th>min</th>
+      <th>max</th>
+      <th>min</th>
+      <th>max</th>
+      <th>min</th>
+      <th>max</th>
+      <th>min</th>
+      <th>max</th>
+      <th>min</th>
+      <th>max</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>RPAR</th>
+      <td>0.25</td>
+      <td>0.37</td>
+      <td>0.19</td>
+      <td>0.46</td>
+      <td>0.33</td>
+      <td>0.71</td>
+      <td>0.11</td>
+      <td>0.25</td>
+      <td>0.00</td>
+      <td>0.10</td>
+      <td>1.25</td>
+      <td>1.58</td>
+      <td>0.78</td>
+      <td>0.95</td>
+      <td>71</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>0.35</td>
+      <td>0.52</td>
+      <td>0.42</td>
+      <td>0.61</td>
+      <td>0.31</td>
+      <td>0.99</td>
+      <td>0.17</td>
+      <td>0.32</td>
+      <td>0.02</td>
+      <td>0.16</td>
+      <td>1.54</td>
+      <td>2.22</td>
+      <td>0.68</td>
+      <td>0.92</td>
+      <td>46</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <td>0.35</td>
+      <td>0.38</td>
+      <td>0.14</td>
+      <td>0.34</td>
+      <td>0.66</td>
+      <td>0.98</td>
+      <td>0.18</td>
+      <td>0.20</td>
+      <td>0.06</td>
+      <td>0.09</td>
+      <td>1.63</td>
+      <td>1.75</td>
+      <td>0.87</td>
+      <td>0.89</td>
+      <td>8</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>0.79</td>
+      <td>0.95</td>
+      <td>-0.06</td>
+      <td>0.23</td>
+      <td>-0.12</td>
+      <td>0.69</td>
+      <td>-0.03</td>
+      <td>0.12</td>
+      <td>-0.07</td>
+      <td>0.01</td>
+      <td>0.94</td>
+      <td>1.65</td>
+      <td>0.85</td>
+      <td>0.97</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>-0.26</td>
+      <td>0.45</td>
+      <td>-0.33</td>
+      <td>0.34</td>
+      <td>-0.91</td>
+      <td>0.28</td>
+      <td>-0.34</td>
+      <td>0.30</td>
+      <td>-0.03</td>
+      <td>0.34</td>
+      <td>-0.86</td>
+      <td>0.96</td>
+      <td>0.27</td>
+      <td>0.57</td>
+      <td>78</td>
+    </tr>
+  </tbody>
+</table>
+
 **Notes on the rolling regressions:**
 
 * **`RPAR`:** Factor exposures drift over time but remain relatively stable, with the sum of betas consistently above one (1.25–1.58) and $R^2$ ranging from 0.78 to 0.95. Within its fixed-income exposures, `TLT` and `TIP` betas move in opposite directions during parts of 2026. Given their correlation of approximately 0.70, this may reflect the regression reallocating explanatory power between correlated factors rather than substantial changes in the underlying holdings.
@@ -184,11 +1448,173 @@ The Treasury choice changes the sum of betas. `IEF` has less than half of `TLT`'
 
 > State what the sum of betas measures for these funds and how it depends on the choice in 2.1. Show the dependence for one fund by re-running 2.2 under a different menu.
 
+<table>
+  <caption>RPAR's full-life regression under four factor menus</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>SPY</th>
+      <th>TLT</th>
+      <th>IEF</th>
+      <th>TIP</th>
+      <th>GLD</th>
+      <th>DBC</th>
+      <th>Sum of Betas</th>
+      <th>Sum of Beta x Factor Vol</th>
+      <th>Annualized Intercept</th>
+      <th>Alpha t-stat</th>
+      <th>R-squared</th>
+      <th>Annualized Tracking Error</th>
+    </tr>
+    <tr>
+      <th>Frequency</th>
+      <th>Menu</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="4">Daily</th>
+      <th>Chosen (SPY, TLT, TIP, GLD, DBC)</th>
+      <td>0.33</td>
+      <td>0.30</td>
+      <td>—</td>
+      <td>0.54</td>
+      <td>0.17</td>
+      <td>0.05</td>
+      <td>1.39</td>
+      <td>18.99%</td>
+      <td>-3.55%</td>
+      <td>-2.01</td>
+      <td>0.86</td>
+      <td>4.61%</td>
+    </tr>
+    <tr>
+      <th>IEF in place of TLT</th>
+      <td>0.31</td>
+      <td>—</td>
+      <td>0.56</td>
+      <td>0.63</td>
+      <td>0.16</td>
+      <td>0.04</td>
+      <td>1.70</td>
+      <td>18.01%</td>
+      <td>-3.33%</td>
+      <td>-1.72</td>
+      <td>0.84</td>
+      <td>5.03%</td>
+    </tr>
+    <tr>
+      <th>Both Treasuries</th>
+      <td>0.33</td>
+      <td>0.30</td>
+      <td>-0.00</td>
+      <td>0.54</td>
+      <td>0.17</td>
+      <td>0.05</td>
+      <td>1.39</td>
+      <td>18.99%</td>
+      <td>-3.55%</td>
+      <td>-2.01</td>
+      <td>0.86</td>
+      <td>4.61%</td>
+    </tr>
+    <tr>
+      <th>Without TIP</th>
+      <td>0.35</td>
+      <td>0.46</td>
+      <td>—</td>
+      <td>—</td>
+      <td>0.18</td>
+      <td>0.09</td>
+      <td>1.08</td>
+      <td>19.53%</td>
+      <td>-3.72%</td>
+      <td>-1.90</td>
+      <td>0.83</td>
+      <td>5.11%</td>
+    </tr>
+    <tr>
+      <th rowspan="4">Monthly</th>
+      <th>Chosen (SPY, TLT, TIP, GLD, DBC)</th>
+      <td>0.31</td>
+      <td>0.39</td>
+      <td>—</td>
+      <td>0.55</td>
+      <td>0.17</td>
+      <td>0.10</td>
+      <td>1.53</td>
+      <td>18.92%</td>
+      <td>-3.00%</td>
+      <td>-2.30</td>
+      <td>0.95</td>
+      <td>2.98%</td>
+    </tr>
+    <tr>
+      <th>IEF in place of TLT</th>
+      <td>0.35</td>
+      <td>—</td>
+      <td>0.77</td>
+      <td>0.42</td>
+      <td>0.18</td>
+      <td>0.09</td>
+      <td>1.81</td>
+      <td>18.52%</td>
+      <td>-3.81%</td>
+      <td>-2.40</td>
+      <td>0.93</td>
+      <td>3.63%</td>
+    </tr>
+    <tr>
+      <th>Both Treasuries</th>
+      <td>0.31</td>
+      <td>0.41</td>
+      <td>-0.04</td>
+      <td>0.56</td>
+      <td>0.17</td>
+      <td>0.10</td>
+      <td>1.52</td>
+      <td>18.88%</td>
+      <td>-2.98%</td>
+      <td>-2.26</td>
+      <td>0.95</td>
+      <td>2.98%</td>
+    </tr>
+    <tr>
+      <th>Without TIP</th>
+      <td>0.39</td>
+      <td>0.52</td>
+      <td>—</td>
+      <td>—</td>
+      <td>0.20</td>
+      <td>0.12</td>
+      <td>1.22</td>
+      <td>19.61%</td>
+      <td>-4.07%</td>
+      <td>-2.79</td>
+      <td>0.94</td>
+      <td>3.41%</td>
+    </tr>
+  </tbody>
+</table>
+
 **What the sum of betas measures**
 
 Since each regression uses excess returns over `SHV`, the factor betas represent the fitted dollar exposure to each factor ETF per dollar of fund NAV, assuming the remaining position is financed through the cash benchmark. The sum of betas therefore measures aggregate **net fitted factor exposure**, rather than actual gross leverage.
 
-For example, `RPAR` has a sum of betas of 1.39 daily (1.53 monthly), implying approximately $1.39 of net factor exposure per dollar of NAV under the chosen factor menu. `UPAR` has a larger sum of 1.76 daily (2.04 monthly), consistent with its more leveraged strategy. Conversely, `DBMF` has a daily sum near zero (0.00), but this does not imply an absence of exposure: positive and negative factor sensitivities can offset, consistent with its rolling sum ranging from −0.86 to 0.96 in Section 2.3.
+For example, `RPAR` has a sum of betas of 1.39 daily (1.53 monthly), implying approximately \$1.39 of net factor exposure per dollar of NAV under the chosen factor menu. `UPAR` has a larger sum of 1.76 daily (2.04 monthly), consistent with its more leveraged strategy. Conversely, `DBMF` has a daily sum near zero (0.00), but this does not imply an absence of exposure: positive and negative factor sensitivities can offset, consistent with its rolling sum ranging from −0.86 to 0.96 in Section 2.3.
 
 **Dependence on factor selection (Question 2.1)**
 
@@ -202,7 +1628,6 @@ Despite these differences, the overall regression fit changes relatively little.
 
 **Overall, the sum of betas is useful for comparing fitted exposures under a common factor specification, but it should not be interpreted as a direct measure of a fund's actual leverage.** For example, `NTSX` targets 150% notional exposure (90% equities and 60% Treasury futures), yet its fitted sum is 1.18 using `TLT` and 1.36 using `IEF`. This difference reflects the choice of factor proxies rather than necessarily a change in the fund's underlying positions.
 
-
 # 3. Replication
 
 ## 3.1
@@ -211,6 +1636,143 @@ Despite these differences, the overall regression fit changes relatively little.
 >
 > * the out-of-sample correlation and tracking error
 > * the annualized mean of the target beside the replica's
+
+<table>
+  <caption>Out-of-sample replication on SPY, TLT, TIP, GLD and DBC, daily excess returns; means and tracking error annualized</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Start</th>
+      <th>Days</th>
+      <th>Correlation</th>
+      <th>Tracking Error</th>
+      <th>Target Mean</th>
+      <th>Replica Mean</th>
+      <th>Mean Gap</th>
+    </tr>
+    <tr>
+      <th>Fund</th>
+      <th>Replica</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2">RPAR</th>
+      <th>With intercept</th>
+      <td>2020-12-15</td>
+      <td>1,471</td>
+      <td>0.94</td>
+      <td>4.19%</td>
+      <td>-0.90%</td>
+      <td>-0.30%</td>
+      <td>-0.61%</td>
+    </tr>
+    <tr>
+      <th>No intercept</th>
+      <td>2020-12-15</td>
+      <td>1,471</td>
+      <td>0.94</td>
+      <td>4.18%</td>
+      <td>-0.90%</td>
+      <td>2.31%</td>
+      <td>-3.22%</td>
+    </tr>
+    <tr>
+      <th rowspan="2">UPAR</th>
+      <th>With intercept</th>
+      <td>2023-01-06</td>
+      <td>953</td>
+      <td>0.93</td>
+      <td>6.03%</td>
+      <td>3.58%</td>
+      <td>4.54%</td>
+      <td>-0.96%</td>
+    </tr>
+    <tr>
+      <th>No intercept</th>
+      <td>2023-01-06</td>
+      <td>953</td>
+      <td>0.93</td>
+      <td>6.02%</td>
+      <td>3.58%</td>
+      <td>7.96%</td>
+      <td>-4.38%</td>
+    </tr>
+    <tr>
+      <th rowspan="2">ALLW</th>
+      <th>With intercept</th>
+      <td>2026-03-10</td>
+      <td>159</td>
+      <td>0.95</td>
+      <td>3.76%</td>
+      <td>-6.20%</td>
+      <td>-5.21%</td>
+      <td>-0.99%</td>
+    </tr>
+    <tr>
+      <th>No intercept</th>
+      <td>2026-03-10</td>
+      <td>159</td>
+      <td>0.95</td>
+      <td>3.75%</td>
+      <td>-6.20%</td>
+      <td>-6.73%</td>
+      <td>0.53%</td>
+    </tr>
+    <tr>
+      <th rowspan="2">NTSX</th>
+      <th>With intercept</th>
+      <td>2019-08-26</td>
+      <td>1,801</td>
+      <td>0.96</td>
+      <td>5.02%</td>
+      <td>11.31%</td>
+      <td>11.76%</td>
+      <td>-0.45%</td>
+    </tr>
+    <tr>
+      <th>No intercept</th>
+      <td>2019-08-26</td>
+      <td>1,801</td>
+      <td>0.96</td>
+      <td>5.02%</td>
+      <td>11.31%</td>
+      <td>11.96%</td>
+      <td>-0.65%</td>
+    </tr>
+    <tr>
+      <th rowspan="2">DBMF</th>
+      <th>With intercept</th>
+      <td>2020-05-08</td>
+      <td>1,624</td>
+      <td>0.52</td>
+      <td>10.67%</td>
+      <td>6.90%</td>
+      <td>0.18%</td>
+      <td>6.72%</td>
+    </tr>
+    <tr>
+      <th>No intercept</th>
+      <td>2020-05-08</td>
+      <td>1,624</td>
+      <td>0.52</td>
+      <td>10.65%</td>
+      <td>6.90%</td>
+      <td>5.67%</td>
+      <td>1.23%</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 4](rp_project_figures/figure_4.png)
 
 ### Reading Figure 4
 
@@ -251,6 +1813,64 @@ A replica can track closely and still drift, which is the main pattern here.
 
 > Which of the five funds does a fixed mix of your factor ETFs replicate out of sample, and which does it not? For the fund it replicates worst, investigate whether the shortfall comes from exposures that move, from factors your menu lacks, or from both. Say what you tested and what it showed.
 
+<table>
+  <caption>Why DBMF does not replicate: fit with moving exposures and with added factors, RPAR as a control</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>DBMF</th>
+      <th>RPAR</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Full-sample R-squared: Menu</th>
+      <td>0.16</td>
+      <td>0.86</td>
+    </tr>
+    <tr>
+      <th>Full-sample R-squared: Menu + IEF</th>
+      <td>0.24</td>
+      <td>0.86</td>
+    </tr>
+    <tr>
+      <th>Full-sample R-squared: Menu + IEF + trend</th>
+      <td>0.41</td>
+      <td>0.87</td>
+    </tr>
+    <tr>
+      <th>Median 63-day block adj. R-squared: Menu</th>
+      <td>0.58</td>
+      <td>0.86</td>
+    </tr>
+    <tr>
+      <th>Median 63-day block adj. R-squared: Menu + IEF</th>
+      <td>0.58</td>
+      <td>0.87</td>
+    </tr>
+    <tr>
+      <th>OOS correlation: Menu, 252-day fit, 21-day hold</th>
+      <td>0.52</td>
+      <td>0.94</td>
+    </tr>
+    <tr>
+      <th>OOS correlation: Menu, 63-day fit, 5-day hold</th>
+      <td>0.64</td>
+      <td>0.93</td>
+    </tr>
+    <tr>
+      <th>OOS correlation: Menu + IEF, 252-day fit, 21-day hold</th>
+      <td>0.55</td>
+      <td>0.94</td>
+    </tr>
+    <tr>
+      <th>OOS correlation: Menu + IEF + trend, 252-day fit, 21-day hold</th>
+      <td>0.61</td>
+      <td>0.94</td>
+    </tr>
+  </tbody>
+</table>
+
 **Which funds the factor menu replicates**
 
 A rolling mix of the menu ETFs replicates `RPAR`, `UPAR`, `ALLW`, and `NTSX` out of sample: correlations of 0.93 to 0.96 and tracking errors of 3.8% to 6.0% a year (3.1, Figure 4). The factor menu is fixed, but the betas are re-estimated every 21 trading days using the previous 252 observations. For `RPAR` and `UPAR`, the replicas track the funds' movements but not their average returns: without an intercept, they outperform the funds by 3.2% and 4.4% annually. The same approach does not replicate `DBMF` well: correlation is 0.52, tracking error is 10.7%, and the replicas miss much of its 2022 gain.
@@ -265,12 +1885,148 @@ A rolling mix of the menu ETFs replicates `RPAR`, `UPAR`, `ALLW`, and `NTSX` out
 
 **Conclusion: both, with moving exposures playing a larger role.** Allowing time-varying betas explains substantially more of `DBMF`'s returns than a static regression (median adjusted $R^2$ of 0.58 versus full-sample $R^2$ of 0.16). However, even the flexible quarterly fit leaves approximately 42% unexplained. That residual may reflect omitted markets, nonlinear exposures, or other fund-specific effects. Because the 63-day block fit is in sample and the trend specifications are evaluated on historical data, these results indicate possible explanations rather than a fully replicable trading strategy.
 
+**The table.** *Why `DBMF` does not replicate* holds every test above, for both funds, so each number in the summary can be traced to its source. `RPAR`'s column is the control: the tests that help `DBMF` should leave a stable fund unchanged.
+
 ## 3.3
 
 > For `RPAR`, compute by calendar year the sum of its daily excess returns minus the sum of a replica's, where the replica applies your full-sample daily betas to the factors with no intercept.
 >
 > * Report the gap by year.
 > * Propose at least two distinct explanations for its sign and persistence, and state what evidence, in this file or obtainable from the issuer, would separate them.
+
+```text
+Full-sample daily betas, no intercept: SPY 0.33, TLT 0.30, TIP 0.54, GLD 0.17, DBC 0.05
+```
+
+<table>
+  <caption>RPAR minus its replica: sums of daily excess returns by calendar year; SPY and GLD are sums of daily excess returns</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Days</th>
+      <th>RPAR</th>
+      <th>Replica</th>
+      <th>Gap</th>
+      <th>Gap t-stat</th>
+      <th>Gap, monthly betas</th>
+      <th>RPAR minus RPARTR</th>
+      <th>SPY</th>
+      <th>GLD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2019 (partial)</th>
+      <td>11</td>
+      <td>0.05%</td>
+      <td>0.29%</td>
+      <td>-0.25%</td>
+      <td>-0.20</td>
+      <td>-0.12%</td>
+      <td>-0.30%</td>
+      <td>1.84%</td>
+      <td>2.67%</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>253</td>
+      <td>18.06%</td>
+      <td>21.51%</td>
+      <td>-3.45%</td>
+      <td>-0.55</td>
+      <td>-4.56%</td>
+      <td>-2.11%</td>
+      <td>21.70%</td>
+      <td>23.27%</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>252</td>
+      <td>7.79%</td>
+      <td>11.81%</td>
+      <td>-4.02%</td>
+      <td>-0.97</td>
+      <td>-5.31%</td>
+      <td>-1.65%</td>
+      <td>26.22%</td>
+      <td>-3.20%</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>251</td>
+      <td>-25.45%</td>
+      <td>-23.33%</td>
+      <td>-2.12%</td>
+      <td>-0.40</td>
+      <td>-0.14%</td>
+      <td>0.14%</td>
+      <td>-18.06%</td>
+      <td>-0.55%</td>
+    </tr>
+    <tr>
+      <th>2023</th>
+      <td>250</td>
+      <td>1.78%</td>
+      <td>6.41%</td>
+      <td>-4.62%</td>
+      <td>-1.19</td>
+      <td>-3.79%</td>
+      <td>-0.63%</td>
+      <td>19.20%</td>
+      <td>7.92%</td>
+    </tr>
+    <tr>
+      <th>2024</th>
+      <td>252</td>
+      <td>-4.38%</td>
+      <td>3.56%</td>
+      <td>-7.94%</td>
+      <td>-2.34</td>
+      <td>-6.53%</td>
+      <td>-0.54%</td>
+      <td>18.02%</td>
+      <td>19.77%</td>
+    </tr>
+    <tr>
+      <th>2025</th>
+      <td>250</td>
+      <td>12.91%</td>
+      <td>14.32%</td>
+      <td>-1.41%</td>
+      <td>-0.38</td>
+      <td>-1.72%</td>
+      <td>-0.72%</td>
+      <td>14.05%</td>
+      <td>47.15%</td>
+    </tr>
+    <tr>
+      <th>2026 (partial)</th>
+      <td>204</td>
+      <td>0.22%</td>
+      <td>0.69%</td>
+      <td>-0.46%</td>
+      <td>-0.11</td>
+      <td>-1.99%</td>
+      <td>-0.14%</td>
+      <td>9.47%</td>
+      <td>-6.88%</td>
+    </tr>
+    <tr>
+      <th>Total</th>
+      <td>1,723</td>
+      <td>10.99%</td>
+      <td>35.27%</td>
+      <td>-24.28%</td>
+      <td>-2.01</td>
+      <td>-24.15%</td>
+      <td>-5.94%</td>
+      <td>92.44%</td>
+      <td>90.15%</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 5](rp_project_figures/figure_5.png)
 
 ### Reading Figure 5
 
@@ -304,10 +2060,15 @@ These include the 0.52% expense ratio, trading costs from rebalancing and rollin
 * **The fund against its own index (in this file, with a caveat).** `RPAR`'s return minus `RPARTR`'s splits the gap into implementation (fund against index) and design or basis (index against replica). `RPAR` lagged `RPARTR` by −5.9% in total, about −0.9% a year, negative in 7 of 8 years, against the −3.5% a year it lagged the replica. That points to basis for most of the gap. But `RPARTR` is a price index without reinvested income, so the fund's true shortfall to its index is larger by the index's income. The total-return version of the index, from the issuer, settles how much is implementation.
 * **Sleeve holdings and their benchmarks (from the issuer).** Holdings by sleeve, plus returns on the matching global equity, emerging-market and commodity-equity indexes, would show directly whether the yearly gap tracks the return of `RPAR`'s equity and commodity sleeves minus `SPY` and `DBC`. If it is basis, the gap should regress on those return differences with slopes near the sleeve weights and leave little behind. If it is cost, the residual stays a steady negative of about the size of the fund-against-index shortfall.
 
-
 # 4. Before It Existed
 
 Cash is `SHV` throughout. Choose and state the estimation window and covariance estimator.
+
+**The table.** Beyond the gap itself, the yearly table adds three sets of columns, one for each check in this answer:
+
+* **The gap with monthly betas:** rules out daily timing.
+* **`RPAR` minus `RPARTR`:** splits the gap into fund against index and index against replica.
+* **`SPY`'s and `GLD`'s yearly excess returns:** the market moves that the basis explanation says the gap should follow.
 
 ## 4.1
 
@@ -319,6 +2080,195 @@ Cash is `SHV` throughout. Choose and state the estimation window and covariance 
 > #### Risk Contributions
 >
 > For weights $\boldsymbol{w}$ on $n$ assets with covariance $\Sigma$, asset $i$'s risk contribution is $\text{RC}_i = w_i\,(\Sigma\boldsymbol{w})_i$, and the contributions sum to the portfolio variance $\boldsymbol{w}'\Sigma\boldsymbol{w}$. Inverse variance sets $w_i \propto 1/\sigma_i^2$, the rule the Harvard case calls risk parity. Inverse volatility sets $w_i \propto 1/\sigma_i$. Equal risk contribution (ERC) sets every $\text{RC}_i$ equal and is solved numerically. When every pair of assets has the same correlation, ERC coincides with inverse volatility; otherwise the three rules differ.
+
+```text
+Rebalances: 225, first set at 2008-01-31, last at 2026-09-30
+Backtest returns: 2008-02-01 to 2026-10-23
+```
+
+<table>
+  <caption>ERC risk contributions at 2020-02-28, annualized trailing 252-day covariance</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Weight</th>
+      <th>Volatility</th>
+      <th>Risk Contribution</th>
+      <th>Share of Variance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SPY</th>
+      <td>20.13%</td>
+      <td>13.58%</td>
+      <td>0.000475</td>
+      <td>20.00%</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>16.70%</td>
+      <td>12.63%</td>
+      <td>0.000475</td>
+      <td>20.00%</td>
+    </tr>
+    <tr>
+      <th>TIP</th>
+      <td>36.15%</td>
+      <td>3.97%</td>
+      <td>0.000475</td>
+      <td>20.00%</td>
+    </tr>
+    <tr>
+      <th>GLD</th>
+      <td>13.18%</td>
+      <td>12.48%</td>
+      <td>0.000475</td>
+      <td>20.00%</td>
+    </tr>
+    <tr>
+      <th>DBC</th>
+      <td>13.84%</td>
+      <td>14.04%</td>
+      <td>0.000475</td>
+      <td>20.00%</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Portfolio variance 0.002373 (volatility 4.87%); largest minus smallest contribution 1.3e-10
+```
+
+<table>
+  <caption>Weights set by each rule at 2020-02-28</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Inverse Variance</th>
+      <th>Inverse Volatility</th>
+      <th>ERC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SPY</th>
+      <td>6.26%</td>
+      <td>13.24%</td>
+      <td>20.13%</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>7.23%</td>
+      <td>14.24%</td>
+      <td>16.70%</td>
+    </tr>
+    <tr>
+      <th>TIP</th>
+      <td>73.23%</td>
+      <td>45.30%</td>
+      <td>36.15%</td>
+    </tr>
+    <tr>
+      <th>GLD</th>
+      <td>7.41%</td>
+      <td>14.41%</td>
+      <td>13.18%</td>
+    </tr>
+    <tr>
+      <th>DBC</th>
+      <td>5.86%</td>
+      <td>12.81%</td>
+      <td>13.84%</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>ERC convergence at every month-end, 2008-01-31 to 2026-09-30</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>ERC convergence</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Rebalance dates</th>
+      <td>225</td>
+    </tr>
+    <tr>
+      <th>Optimizer reports success</th>
+      <td>221</td>
+    </tr>
+    <tr>
+      <th>Largest share deviation from 20%, any asset, any date</th>
+      <td>3.4e-08</td>
+    </tr>
+    <tr>
+      <th>Mean across dates of each date's largest deviation</th>
+      <td>1.6e-09</td>
+    </tr>
+    <tr>
+      <th>Dates with a deviation above 1e-06</th>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Largest difference between re-solved and stored weights</th>
+      <td>0.0e+00</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Rebalance dates where the optimizer did not report success</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Optimizer Success</th>
+      <th>Message</th>
+      <th>Iterations</th>
+      <th>Max Share Deviation</th>
+      <th>Max Weight Difference</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2012-07-31 00:00:00</th>
+      <td>False</td>
+      <td>ABNORMAL: </td>
+      <td>15</td>
+      <td>9.0e-10</td>
+      <td>0.0e+00</td>
+    </tr>
+    <tr>
+      <th>2013-06-28 00:00:00</th>
+      <td>False</td>
+      <td>ABNORMAL: </td>
+      <td>14</td>
+      <td>4.3e-09</td>
+      <td>0.0e+00</td>
+    </tr>
+    <tr>
+      <th>2018-02-28 00:00:00</th>
+      <td>False</td>
+      <td>ABNORMAL: </td>
+      <td>12</td>
+      <td>3.5e-09</td>
+      <td>0.0e+00</td>
+    </tr>
+    <tr>
+      <th>2019-12-31 00:00:00</th>
+      <td>False</td>
+      <td>ABNORMAL: </td>
+      <td>13</td>
+      <td>2.9e-09</td>
+      <td>0.0e+00</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 6](rp_project_figures/figure_6.png)
 
 ### Reading Figure 6
 
@@ -354,11 +2304,525 @@ One date does not show that every monthly optimization converged, so we re-solve
 
 `TIP` has the largest weight in 216 of 225 months, between 29% and 47%. `SPY` ranges from 11% to 33%, `TLT` from 12% to 34%, `GLD` from 5% to 21% and `DBC` from 9% to 20%. The weights move with relative volatility: `TLT` overtakes `TIP` in the 2008–09 crisis, when TIPS volatility spiked, and `SPY` takes the top weight in late 2017, when equity volatility was unusually low.
 
+**The tables.**
+
+* ***Weights set by each rule at 2020-02-28:*** shows concretely how ERC departs from inverse volatility once the correlations are unequal.
+* ***The convergence summary and the dates scipy flagged:*** show that every month, not just the one checked, satisfies the ERC condition, and that the flagged dates are a reporting quirk rather than failed solutions.
+
 ## 4.2
 
 > For the three unlevered rules, 60/40, the static four-way, `SPY` and `TLT`, report annualized mean and volatility, Sharpe ratio and maximum drawdown over the full backtest and the sub-periods before and after 2019-12-13. Also report calendar-year total returns, including 2008, 2013, 2020 and 2022.
 >
 > Repeat the full-backtest statistics for the ERC rule and 60/40 with the backtest started in 2007, the earliest start the ETFs and your estimation window allow. What moves?
+
+<table>
+  <caption>Unlevered rules and benchmarks; Sharpe ratios on excess returns over SHV</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Max Drawdown</th>
+      <th>Peak Date</th>
+      <th>Trough Date</th>
+      <th>Recovery Date</th>
+    </tr>
+    <tr>
+      <th>Period</th>
+      <th>Strategy</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="7">Full backtest, 2008-02-01 to 2026-10-23</th>
+      <th>Inverse Variance</th>
+      <td>4.16%</td>
+      <td>6.32%</td>
+      <td>0.44</td>
+      <td>-16.63%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-08-26</td>
+    </tr>
+    <tr>
+      <th>Inverse Volatility</th>
+      <td>5.14%</td>
+      <td>7.10%</td>
+      <td>0.53</td>
+      <td>-17.54%</td>
+      <td>2008-07-14</td>
+      <td>2008-10-27</td>
+      <td>2009-11-25</td>
+    </tr>
+    <tr>
+      <th>ERC</th>
+      <td>5.51%</td>
+      <td>7.26%</td>
+      <td>0.57</td>
+      <td>-17.97%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-07-16</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>8.86%</td>
+      <td>11.34%</td>
+      <td>0.66</td>
+      <td>-30.80%</td>
+      <td>2008-05-19</td>
+      <td>2009-03-09</td>
+      <td>2010-04-23</td>
+    </tr>
+    <tr>
+      <th>static four-way</th>
+      <td>7.14%</td>
+      <td>10.24%</td>
+      <td>0.56</td>
+      <td>-27.57%</td>
+      <td>2008-07-14</td>
+      <td>2008-11-20</td>
+      <td>2010-09-22</td>
+    </tr>
+    <tr>
+      <th>SPY</th>
+      <td>12.92%</td>
+      <td>19.68%</td>
+      <td>0.58</td>
+      <td>-51.49%</td>
+      <td>2008-05-19</td>
+      <td>2009-03-09</td>
+      <td>2011-04-26</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>3.41%</td>
+      <td>15.23%</td>
+      <td>0.13</td>
+      <td>-48.35%</td>
+      <td>2020-08-04</td>
+      <td>2023-10-19</td>
+      <td>Not recovered</td>
+    </tr>
+    <tr>
+      <th rowspan="7">Before RPAR, to 2019-12-12</th>
+      <th>Inverse Variance</th>
+      <td>3.79%</td>
+      <td>5.89%</td>
+      <td>0.54</td>
+      <td>-13.74%</td>
+      <td>2008-07-10</td>
+      <td>2008-10-31</td>
+      <td>2009-10-19</td>
+    </tr>
+    <tr>
+      <th>Inverse Volatility</th>
+      <td>4.15%</td>
+      <td>6.56%</td>
+      <td>0.54</td>
+      <td>-17.54%</td>
+      <td>2008-07-14</td>
+      <td>2008-10-27</td>
+      <td>2009-11-25</td>
+    </tr>
+    <tr>
+      <th>ERC</th>
+      <td>4.74%</td>
+      <td>6.60%</td>
+      <td>0.62</td>
+      <td>-17.84%</td>
+      <td>2008-05-21</td>
+      <td>2008-10-27</td>
+      <td>2010-04-30</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>8.37%</td>
+      <td>10.86%</td>
+      <td>0.71</td>
+      <td>-30.80%</td>
+      <td>2008-05-19</td>
+      <td>2009-03-09</td>
+      <td>2010-04-23</td>
+    </tr>
+    <tr>
+      <th>static four-way</th>
+      <td>4.86%</td>
+      <td>9.87%</td>
+      <td>0.43</td>
+      <td>-27.57%</td>
+      <td>2008-07-14</td>
+      <td>2008-11-20</td>
+      <td>2010-09-22</td>
+    </tr>
+    <tr>
+      <th>SPY</th>
+      <td>11.01%</td>
+      <td>19.56%</td>
+      <td>0.53</td>
+      <td>-51.49%</td>
+      <td>2008-05-19</td>
+      <td>2009-03-09</td>
+      <td>2011-04-26</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>7.28%</td>
+      <td>14.53%</td>
+      <td>0.46</td>
+      <td>-26.59%</td>
+      <td>2008-12-30</td>
+      <td>2009-06-10</td>
+      <td>2011-08-18</td>
+    </tr>
+    <tr>
+      <th rowspan="7">After RPAR, from 2019-12-13</th>
+      <th>Inverse Variance</th>
+      <td>4.79%</td>
+      <td>7.00%</td>
+      <td>0.30</td>
+      <td>-16.63%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-08-26</td>
+    </tr>
+    <tr>
+      <th>Inverse Volatility</th>
+      <td>6.84%</td>
+      <td>7.94%</td>
+      <td>0.52</td>
+      <td>-17.46%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-07-16</td>
+    </tr>
+    <tr>
+      <th>ERC</th>
+      <td>6.84%</td>
+      <td>8.29%</td>
+      <td>0.50</td>
+      <td>-17.97%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-07-16</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>9.72%</td>
+      <td>12.14%</td>
+      <td>0.58</td>
+      <td>-21.02%</td>
+      <td>2021-12-27</td>
+      <td>2022-10-14</td>
+      <td>2024-02-22</td>
+    </tr>
+    <tr>
+      <th>static four-way</th>
+      <td>11.08%</td>
+      <td>10.84%</td>
+      <td>0.77</td>
+      <td>-18.00%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-04-08</td>
+    </tr>
+    <tr>
+      <th>SPY</th>
+      <td>16.24%</td>
+      <td>19.91%</td>
+      <td>0.68</td>
+      <td>-33.70%</td>
+      <td>2020-02-19</td>
+      <td>2020-03-23</td>
+      <td>2020-08-10</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>-3.30%</td>
+      <td>16.38%</td>
+      <td>-0.37</td>
+      <td>-48.35%</td>
+      <td>2020-08-04</td>
+      <td>2023-10-19</td>
+      <td>Not recovered</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Calendar-year total returns over the backtest; 2008 starts 2008-02-01 and 2026 ends 2026-10-23</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>2008 (Feb-Dec)</th>
+      <th>2009</th>
+      <th>2010</th>
+      <th>2011</th>
+      <th>2012</th>
+      <th>2013</th>
+      <th>2014</th>
+      <th>2015</th>
+      <th>2016</th>
+      <th>2017</th>
+      <th>2018</th>
+      <th>2019</th>
+      <th>2020</th>
+      <th>2021</th>
+      <th>2022</th>
+      <th>2023</th>
+      <th>2024</th>
+      <th>2025</th>
+      <th>2026 YTD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Inverse Variance</th>
+      <td>0.30%</td>
+      <td>4.03%</td>
+      <td>8.85%</td>
+      <td>12.64%</td>
+      <td>6.98%</td>
+      <td>-6.28%</td>
+      <td>1.35%</td>
+      <td>-4.26%</td>
+      <td>6.39%</td>
+      <td>6.67%</td>
+      <td>-1.31%</td>
+      <td>10.89%</td>
+      <td>13.00%</td>
+      <td>6.91%</td>
+      <td>-11.85%</td>
+      <td>6.50%</td>
+      <td>6.80%</td>
+      <td>9.26%</td>
+      <td>2.49%</td>
+    </tr>
+    <tr>
+      <th>Inverse Volatility</th>
+      <td>-3.70%</td>
+      <td>6.17%</td>
+      <td>12.02%</td>
+      <td>12.25%</td>
+      <td>7.29%</td>
+      <td>-5.91%</td>
+      <td>1.23%</td>
+      <td>-6.15%</td>
+      <td>7.92%</td>
+      <td>8.78%</td>
+      <td>-2.24%</td>
+      <td>13.86%</td>
+      <td>13.22%</td>
+      <td>9.44%</td>
+      <td>-11.16%</td>
+      <td>7.34%</td>
+      <td>8.34%</td>
+      <td>13.44%</td>
+      <td>6.54%</td>
+    </tr>
+    <tr>
+      <th>ERC</th>
+      <td>-3.21%</td>
+      <td>3.64%</td>
+      <td>12.12%</td>
+      <td>12.95%</td>
+      <td>7.66%</td>
+      <td>-3.63%</td>
+      <td>2.73%</td>
+      <td>-5.60%</td>
+      <td>8.29%</td>
+      <td>10.46%</td>
+      <td>-1.82%</td>
+      <td>15.11%</td>
+      <td>11.59%</td>
+      <td>9.44%</td>
+      <td>-11.70%</td>
+      <td>7.39%</td>
+      <td>8.72%</td>
+      <td>13.47%</td>
+      <td>8.02%</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>-14.77%</td>
+      <td>13.26%</td>
+      <td>13.46%</td>
+      <td>8.29%</td>
+      <td>11.26%</td>
+      <td>15.61%</td>
+      <td>11.95%</td>
+      <td>1.78%</td>
+      <td>7.80%</td>
+      <td>13.76%</td>
+      <td>-1.95%</td>
+      <td>21.77%</td>
+      <td>16.94%</td>
+      <td>15.09%</td>
+      <td>-16.38%</td>
+      <td>16.98%</td>
+      <td>14.24%</td>
+      <td>14.32%</td>
+      <td>6.32%</td>
+    </tr>
+    <tr>
+      <th>static four-way</th>
+      <td>-10.63%</td>
+      <td>11.30%</td>
+      <td>17.27%</td>
+      <td>11.75%</td>
+      <td>7.83%</td>
+      <td>-6.02%</td>
+      <td>0.94%</td>
+      <td>-9.62%</td>
+      <td>10.69%</td>
+      <td>12.34%</td>
+      <td>-4.46%</td>
+      <td>19.22%</td>
+      <td>15.07%</td>
+      <td>14.49%</td>
+      <td>-8.29%</td>
+      <td>8.99%</td>
+      <td>11.08%</td>
+      <td>22.51%</td>
+      <td>12.54%</td>
+    </tr>
+    <tr>
+      <th>SPY</th>
+      <td>-32.74%</td>
+      <td>26.37%</td>
+      <td>15.06%</td>
+      <td>1.89%</td>
+      <td>15.99%</td>
+      <td>32.31%</td>
+      <td>13.46%</td>
+      <td>1.25%</td>
+      <td>12.00%</td>
+      <td>21.70%</td>
+      <td>-4.56%</td>
+      <td>31.22%</td>
+      <td>18.37%</td>
+      <td>28.75%</td>
+      <td>-18.17%</td>
+      <td>26.19%</td>
+      <td>24.89%</td>
+      <td>17.72%</td>
+      <td>12.32%</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>31.18%</td>
+      <td>-21.80%</td>
+      <td>9.05%</td>
+      <td>33.96%</td>
+      <td>2.63%</td>
+      <td>-13.37%</td>
+      <td>27.30%</td>
+      <td>-1.79%</td>
+      <td>1.18%</td>
+      <td>9.18%</td>
+      <td>-1.61%</td>
+      <td>14.12%</td>
+      <td>18.15%</td>
+      <td>-4.60%</td>
+      <td>-31.24%</td>
+      <td>2.77%</td>
+      <td>-8.06%</td>
+      <td>4.25%</td>
+      <td>-3.42%</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+ERC convergence, 236 month-ends from 2007-02-28: largest share deviation from 20% 3.4e-08
+```
+
+<table>
+  <caption>Full-backtest statistics for ERC and 60/40 by start date</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Max Drawdown</th>
+      <th>Peak Date</th>
+      <th>Trough Date</th>
+      <th>Recovery Date</th>
+    </tr>
+    <tr>
+      <th>Strategy</th>
+      <th>Start</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2">ERC</th>
+      <th>From 2007-03-01</th>
+      <td>5.93%</td>
+      <td>7.20%</td>
+      <td>0.60</td>
+      <td>-17.97%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-07-16</td>
+    </tr>
+    <tr>
+      <th>From 2008-02-01</th>
+      <td>5.51%</td>
+      <td>7.26%</td>
+      <td>0.57</td>
+      <td>-17.97%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-07-16</td>
+    </tr>
+    <tr>
+      <th rowspan="2">60/40</th>
+      <th>From 2007-03-01</th>
+      <td>8.70%</td>
+      <td>11.25%</td>
+      <td>0.63</td>
+      <td>-31.41%</td>
+      <td>2007-12-10</td>
+      <td>2009-03-09</td>
+      <td>2010-09-20</td>
+    </tr>
+    <tr>
+      <th>From 2008-02-01</th>
+      <td>8.86%</td>
+      <td>11.34%</td>
+      <td>0.66</td>
+      <td>-30.80%</td>
+      <td>2008-05-19</td>
+      <td>2009-03-09</td>
+      <td>2010-04-23</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Return from 2007-03-01 to 2008-01-31: ERC 14.09%, 60/40 4.79%
+```
+
+![Figure 7](rp_project_figures/figure_7.png)
 
 ### Reading Figure 7
 
@@ -404,6 +2868,255 @@ Figure 7 repeats the comparison for every month-end start from 2007-02-28 to 201
 > * annualized mean and volatility, Sharpe ratio and maximum drawdown
 > * one-way turnover per year, counting changes in both weights and leverage
 
+```text
+Leverage: 1.555x, set to match 60/40's full-backtest volatility of 11.34%
+```
+
+<table>
+  <caption>Levered ERC against unlevered ERC and 60/40, 2008-02-01 to 2026-10-23</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Leverage</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Max Drawdown</th>
+      <th>Peak Date</th>
+      <th>Trough Date</th>
+      <th>Recovery Date</th>
+      <th>One-Way Turnover per Year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Levered ERC</th>
+      <td>1.55x</td>
+      <td>7.77%</td>
+      <td>11.34%</td>
+      <td>0.56</td>
+      <td>-27.41%</td>
+      <td>2008-05-21</td>
+      <td>2008-10-27</td>
+      <td>2010-08-02</td>
+      <td>0.35</td>
+    </tr>
+    <tr>
+      <th>ERC</th>
+      <td>1.00x</td>
+      <td>5.51%</td>
+      <td>7.26%</td>
+      <td>0.57</td>
+      <td>-17.97%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-07-16</td>
+      <td>0.22</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>1.00x</td>
+      <td>8.86%</td>
+      <td>11.34%</td>
+      <td>0.66</td>
+      <td>-30.80%</td>
+      <td>2008-05-19</td>
+      <td>2009-03-09</td>
+      <td>2010-04-23</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Turnover per year: 0.35, of which weight changes 0.34 and restoring the drifted leverage 0.01
+Leverage just before each reset: mean 1.55x, range 1.50x to 1.67x
+```
+
+<table>
+  <caption>Sums of daily return contributions by asset in four calendar years (2008 from February)</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>SPY</th>
+      <th>TLT</th>
+      <th>TIP</th>
+      <th>GLD</th>
+      <th>DBC</th>
+      <th>IEF</th>
+      <th>Cash</th>
+      <th>Sum</th>
+      <th>Compounded Return</th>
+    </tr>
+    <tr>
+      <th>Year</th>
+      <th>Strategy</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="3">2008</th>
+      <th>ERC</th>
+      <td>-8.12%</td>
+      <td>9.13%</td>
+      <td>-1.09%</td>
+      <td>-0.05%</td>
+      <td>-2.57%</td>
+      <td>—</td>
+      <td>—</td>
+      <td>-2.70%</td>
+      <td>-3.21%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>-12.37%</td>
+      <td>13.92%</td>
+      <td>-1.94%</td>
+      <td>-0.22%</td>
+      <td>-4.00%</td>
+      <td>—</td>
+      <td>-1.15%</td>
+      <td>-5.76%</td>
+      <td>-6.95%</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>-18.81%</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>5.45%</td>
+      <td>—</td>
+      <td>-13.36%</td>
+      <td>-14.77%</td>
+    </tr>
+    <tr>
+      <th rowspan="3">2013</th>
+      <th>ERC</th>
+      <td>6.21%</td>
+      <td>-2.85%</td>
+      <td>-3.14%</td>
+      <td>-2.80%</td>
+      <td>-0.91%</td>
+      <td>—</td>
+      <td>—</td>
+      <td>-3.50%</td>
+      <td>-3.63%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>9.68%</td>
+      <td>-4.41%</td>
+      <td>-4.89%</td>
+      <td>-4.37%</td>
+      <td>-1.42%</td>
+      <td>—</td>
+      <td>0.00%</td>
+      <td>-5.40%</td>
+      <td>-5.72%</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>17.17%</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>-2.44%</td>
+      <td>—</td>
+      <td>14.74%</td>
+      <td>15.61%</td>
+    </tr>
+    <tr>
+      <th rowspan="3">2020</th>
+      <th>ERC</th>
+      <td>1.34%</td>
+      <td>2.66%</td>
+      <td>3.35%</td>
+      <td>4.12%</td>
+      <td>0.04%</td>
+      <td>—</td>
+      <td>—</td>
+      <td>11.52%</td>
+      <td>11.59%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>2.00%</td>
+      <td>4.17%</td>
+      <td>5.41%</td>
+      <td>6.37%</td>
+      <td>0.06%</td>
+      <td>—</td>
+      <td>-0.45%</td>
+      <td>17.57%</td>
+      <td>17.55%</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>13.50%</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>3.92%</td>
+      <td>—</td>
+      <td>17.42%</td>
+      <td>16.94%</td>
+    </tr>
+    <tr>
+      <th rowspan="3">2022</th>
+      <th>ERC</th>
+      <td>-3.67%</td>
+      <td>-6.66%</td>
+      <td>-4.04%</td>
+      <td>0.09%</td>
+      <td>2.50%</td>
+      <td>—</td>
+      <td>—</td>
+      <td>-11.78%</td>
+      <td>-11.70%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>-5.75%</td>
+      <td>-10.35%</td>
+      <td>-6.31%</td>
+      <td>0.18%</td>
+      <td>3.91%</td>
+      <td>—</td>
+      <td>-0.52%</td>
+      <td>-18.84%</td>
+      <td>-18.48%</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>-10.28%</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>-6.37%</td>
+      <td>—</td>
+      <td>-16.65%</td>
+      <td>-16.38%</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 8](rp_project_figures/figure_8.png)
+
 ### Reading Figure 8
 
 *What is plotted.* One panel per calendar year (2008 from February) and one bar per strategy.
@@ -443,6 +3156,201 @@ At equal volatility, the levered ERC no longer has the drawdown advantage it had
 >
 > Does the 2008 to 2019 record change what a reader of Section 1 would conclude? Keep the allocation rule and `RPAR`'s implementation of it separate in the answer.
 
+<table>
+  <caption>ERC weights and RPAR's allocation over RPAR's life, 2019-12-16 to 2026-10-23</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>ERC, mean month-end target</th>
+      <th>ERC, mean held</th>
+      <th>RPAR revealed, daily betas</th>
+      <th>RPAR revealed, monthly betas</th>
+      <th>RPAR index, stated</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SPY</th>
+      <td>16.6%</td>
+      <td>16.6%</td>
+      <td>23.4%</td>
+      <td>20.4%</td>
+      <td>25.0%</td>
+    </tr>
+    <tr>
+      <th>TLT</th>
+      <td>17.7%</td>
+      <td>17.6%</td>
+      <td>21.9%</td>
+      <td>25.8%</td>
+      <td>15.0%</td>
+    </tr>
+    <tr>
+      <th>TIP</th>
+      <td>35.6%</td>
+      <td>35.4%</td>
+      <td>39.0%</td>
+      <td>35.8%</td>
+      <td>35.0%</td>
+    </tr>
+    <tr>
+      <th>GLD</th>
+      <td>14.8%</td>
+      <td>14.9%</td>
+      <td>12.1%</td>
+      <td>11.2%</td>
+      <td>12.5%</td>
+    </tr>
+    <tr>
+      <th>DBC</th>
+      <td>15.3%</td>
+      <td>15.4%</td>
+      <td>3.6%</td>
+      <td>6.8%</td>
+      <td>12.5%</td>
+    </tr>
+    <tr>
+      <th>Sum of betas (unscaled)</th>
+      <td>—</td>
+      <td>—</td>
+      <td>1.39</td>
+      <td>1.53</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>RPAR's excess return on the levered ERC portfolio's, over RPAR's life</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Daily</th>
+      <th>Monthly (full months)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Slope</th>
+      <td>0.85</td>
+      <td>1.02</td>
+    </tr>
+    <tr>
+      <th>Annualized Intercept</th>
+      <td>-3.79%</td>
+      <td>-4.56%</td>
+    </tr>
+    <tr>
+      <th>Alpha t-stat</th>
+      <td>-1.65</td>
+      <td>-2.58</td>
+    </tr>
+    <tr>
+      <th>R-squared</th>
+      <td>0.77</td>
+      <td>0.89</td>
+    </tr>
+    <tr>
+      <th>Tracking Error</th>
+      <td>6.02%</td>
+      <td>4.52%</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>The levered ERC rule and RPAR, each at its own volatility</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Max Drawdown</th>
+    </tr>
+    <tr>
+      <th>Period</th>
+      <th>Strategy</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="3">RPAR's life</th>
+      <th>RPAR</th>
+      <td>4.32%</td>
+      <td>12.56%</td>
+      <td>0.13</td>
+      <td>-30.14%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>9.05%</td>
+      <td>12.94%</td>
+      <td>0.49</td>
+      <td>-26.93%</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>9.69%</td>
+      <td>12.14%</td>
+      <td>0.57</td>
+      <td>-21.02%</td>
+    </tr>
+    <tr>
+      <th rowspan="2">2008-02-01 to 2019-12-12</th>
+      <th>Levered ERC</th>
+      <td>6.97%</td>
+      <td>10.31%</td>
+      <td>0.61</td>
+      <td>-27.41%</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>8.37%</td>
+      <td>10.86%</td>
+      <td>0.71</td>
+      <td>-30.80%</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>RPAR minus the levered ERC by calendar year, sum of daily excess returns</caption>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>2019 (partial)</th>
+      <th>2020</th>
+      <th>2021</th>
+      <th>2022</th>
+      <th>2023</th>
+      <th>2024</th>
+      <th>2025</th>
+      <th>2026 (partial)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>RPAR minus Levered ERC</th>
+      <td>-0.77%</td>
+      <td>1.30%</td>
+      <td>-6.72%</td>
+      <td>-5.68%</td>
+      <td>-2.07%</td>
+      <td>-10.04%</td>
+      <td>-0.80%</td>
+      <td>-7.58%</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 9](rp_project_figures/figure_9.png)
+
 ### Reading Figure 9
 
 *Top: the two paths.* The compounded excess return over `SHV` of `RPAR` (black) and the levered ERC rule (blue), starting from `RPAR`'s first day. Each runs at its own volatility, so part of any gap is scale. What matters is where the lines separate.
@@ -477,7 +3385,6 @@ Daily: slope 0.85, annualized intercept −3.79% ($t$ = −1.65), $R^2$ 0.77. On
   * The gap reflects some mix of these, and this file cannot separate them; the basis and cost explanations of 3.3 are two candidates.
   * The Section 1 finding that `RPAR` lagged the static four-way is therefore a finding about the fund as built, not about the risk-parity rule, and the longer history leaves it unchanged.
 
-
 # 5. What Broke
 
 | Episode | Window |
@@ -488,12 +3395,330 @@ Daily: slope 0.85, annualized intercept −3.79% ($t$ = −1.65), $R^2$ 0.77. On
 
 For the VaR backtests, extend the 2020 window to April 30 and the 2022 window to December 30. A breach is a day whose return falls below the forecast. With the 252-day burn-in, `RPAR` and `DBMF` have no historical-simulation forecast inside the 2020 window; their 2020 rows carry EWMA only. Attribution in 5.3 uses the shorter windows tabled above.
 
+**The tables.**
+
+* ***The levered ERC rule and `RPAR`, each at its own volatility:*** compares Sharpe ratios and drawdowns over `RPAR`'s life and over 2008–2019. It is the basis for the "does 2008–2019 change the conclusion" answer.
+* ***`RPAR` minus the levered ERC by calendar year:*** shows whether the shortfall is steady or comes from a few bad years. It is steady, but uneven in size.
+
 ## 5.1
 
 > For `RPAR`, the levered ERC portfolio from 4.3, 60/40, `NTSX` and `DBMF`, forecast the one-day 5% VaR for every day by rolling historical simulation (the trailing 252 returns) and Normal EWMA with $\lambda = 0.97$. Report
 >
 > * the breach rate over each series' full forecast sample and within each episode in which it has forecasts
 > * a blank where a method has no forecast, and say so
+
+<table>
+  <caption>First forecast of each method: historical simulation after 252 returns, EWMA from the 22nd day</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>First Return</th>
+      <th>First Historical Forecast</th>
+      <th>First EWMA Forecast</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>RPAR</th>
+      <td>2019-12-16</td>
+      <td>2020-12-15</td>
+      <td>2020-01-16</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>2008-02-01</td>
+      <td>2009-02-02</td>
+      <td>2008-03-04</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>2002-07-29</td>
+      <td>2003-07-29</td>
+      <td>2002-08-27</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>2018-08-03</td>
+      <td>2019-08-26</td>
+      <td>2018-09-04</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>2019-05-09</td>
+      <td>2020-05-08</td>
+      <td>2019-06-10</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>One-day 5% VaR breaches (expected rate 5%). Episodes extended to 2020-04-30 and 2022-12-30. — : no forecast in that window (historical simulation needs 252 prior returns)</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th colspan="3">Full sample</th>
+      <th colspan="3">2020</th>
+      <th colspan="3">2022</th>
+      <th colspan="3">Calm</th>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Breach Rate</th>
+      <th>Breaches</th>
+      <th>Forecast Days</th>
+      <th>Breach Rate</th>
+      <th>Breaches</th>
+      <th>Forecast Days</th>
+      <th>Breach Rate</th>
+      <th>Breaches</th>
+      <th>Forecast Days</th>
+      <th>Breach Rate</th>
+      <th>Breaches</th>
+      <th>Forecast Days</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2">RPAR</th>
+      <th>Historical</th>
+      <td>5.8%</td>
+      <td>86</td>
+      <td>1471</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>12.0%</td>
+      <td>30</td>
+      <td>251</td>
+      <td>4.0%</td>
+      <td>20</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>5.7%</td>
+      <td>97</td>
+      <td>1702</td>
+      <td>15.7%</td>
+      <td>8</td>
+      <td>51</td>
+      <td>9.2%</td>
+      <td>23</td>
+      <td>251</td>
+      <td>5.0%</td>
+      <td>25</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th rowspan="2">Levered ERC</th>
+      <th>Historical</th>
+      <td>4.9%</td>
+      <td>218</td>
+      <td>4460</td>
+      <td>23.5%</td>
+      <td>12</td>
+      <td>51</td>
+      <td>12.0%</td>
+      <td>30</td>
+      <td>251</td>
+      <td>2.4%</td>
+      <td>12</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>4.6%</td>
+      <td>214</td>
+      <td>4691</td>
+      <td>15.7%</td>
+      <td>8</td>
+      <td>51</td>
+      <td>7.2%</td>
+      <td>18</td>
+      <td>251</td>
+      <td>4.2%</td>
+      <td>21</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th rowspan="2">60/40</th>
+      <th>Historical</th>
+      <td>5.4%</td>
+      <td>318</td>
+      <td>5848</td>
+      <td>27.5%</td>
+      <td>14</td>
+      <td>51</td>
+      <td>11.2%</td>
+      <td>28</td>
+      <td>251</td>
+      <td>3.4%</td>
+      <td>17</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>5.1%</td>
+      <td>307</td>
+      <td>6079</td>
+      <td>17.6%</td>
+      <td>9</td>
+      <td>51</td>
+      <td>6.8%</td>
+      <td>17</td>
+      <td>251</td>
+      <td>4.4%</td>
+      <td>22</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th rowspan="2">NTSX</th>
+      <th>Historical</th>
+      <td>5.5%</td>
+      <td>99</td>
+      <td>1801</td>
+      <td>29.4%</td>
+      <td>15</td>
+      <td>51</td>
+      <td>11.2%</td>
+      <td>28</td>
+      <td>251</td>
+      <td>3.6%</td>
+      <td>18</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>5.5%</td>
+      <td>112</td>
+      <td>2032</td>
+      <td>15.7%</td>
+      <td>8</td>
+      <td>51</td>
+      <td>8.0%</td>
+      <td>20</td>
+      <td>251</td>
+      <td>4.0%</td>
+      <td>20</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th rowspan="2">DBMF</th>
+      <th>Historical</th>
+      <td>4.7%</td>
+      <td>77</td>
+      <td>1624</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>5.6%</td>
+      <td>14</td>
+      <td>251</td>
+      <td>4.4%</td>
+      <td>22</td>
+      <td>502</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>5.6%</td>
+      <td>103</td>
+      <td>1855</td>
+      <td>11.8%</td>
+      <td>6</td>
+      <td>51</td>
+      <td>3.2%</td>
+      <td>8</td>
+      <td>251</td>
+      <td>5.4%</td>
+      <td>27</td>
+      <td>502</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Breach clustering over each full forecast sample</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Breach Rate</th>
+      <th>Breach Rate the Day after a Breach</th>
+      <th>Days after a Breach</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2">RPAR</th>
+      <th>Historical</th>
+      <td>5.8%</td>
+      <td>10.5%</td>
+      <td>86</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>5.7%</td>
+      <td>11.3%</td>
+      <td>97</td>
+    </tr>
+    <tr>
+      <th rowspan="2">Levered ERC</th>
+      <th>Historical</th>
+      <td>4.9%</td>
+      <td>13.3%</td>
+      <td>218</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>4.6%</td>
+      <td>9.3%</td>
+      <td>214</td>
+    </tr>
+    <tr>
+      <th rowspan="2">60/40</th>
+      <th>Historical</th>
+      <td>5.4%</td>
+      <td>10.7%</td>
+      <td>318</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>5.1%</td>
+      <td>7.2%</td>
+      <td>307</td>
+    </tr>
+    <tr>
+      <th rowspan="2">NTSX</th>
+      <th>Historical</th>
+      <td>5.5%</td>
+      <td>8.1%</td>
+      <td>99</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>5.5%</td>
+      <td>7.1%</td>
+      <td>112</td>
+    </tr>
+    <tr>
+      <th rowspan="2">DBMF</th>
+      <th>Historical</th>
+      <td>4.7%</td>
+      <td>6.5%</td>
+      <td>77</td>
+    </tr>
+    <tr>
+      <th>EWMA</th>
+      <td>5.6%</td>
+      <td>7.8%</td>
+      <td>103</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 10](rp_project_figures/figure_10.png)
 
 ### Reading Figure 10
 
@@ -546,6 +3771,11 @@ A breach is a day whose return falls below the forecast. At a 5% rate we would e
 
 EWMA adapts faster than historical simulation, so it breached less in both episodes and more in the calm one. Neither kept up with a jump like March 2020. 2022 failed differently: it had no single shock, just a year of high volatility and steady losses. A forecast built on calm 2021 kept underestimating those losses, and for `RPAR` even the faster EWMA did.
 
+**The tables.**
+
+* ***First forecast of each method:*** documents why some cells are blank. Historical simulation needs 252 prior returns, so `RPAR` and `DBMF` have no forecast in the 2020 window.
+* ***Breach clustering:*** the lecture's second test. It compares the breach rate on any day with the rate on the day after a breach; independent breaches would make the two equal.
+
 ## 5.2
 
 > On the breach days of the Normal EWMA ($\lambda = 0.97$) forecast within the extended 2020 and 2022 windows, report for each series
@@ -553,6 +3783,152 @@ EWMA adapts faster than historical simulation, so it breached less in both episo
 > * the number of breaches
 > * the mean realized loss beside the mean CVaR forecast on those days
 > * the worst day's return as a multiple of the VaR forecast made for that day
+
+<table>
+  <caption>Normal EWMA (λ = 0.97) breach days, 2020-02-19 to 2020-04-30 and 2022-01-03 to 2022-12-30; expected breaches 2.6 and 12.6</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Breaches</th>
+      <th>Mean Return on Breach Days</th>
+      <th>Mean CVaR Forecast</th>
+      <th>Realized / CVaR</th>
+      <th>Worst Day</th>
+      <th>Worst Return</th>
+      <th>VaR Forecast that Day</th>
+      <th>Worst Return / VaR</th>
+    </tr>
+    <tr>
+      <th>Episode</th>
+      <th>Series</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5">2020</th>
+      <th>RPAR</th>
+      <td>8</td>
+      <td>-2.66%</td>
+      <td>-1.50%</td>
+      <td>1.77x</td>
+      <td>2020-03-12</td>
+      <td>-5.93%</td>
+      <td>-1.38%</td>
+      <td>4.31x</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>8</td>
+      <td>-3.25%</td>
+      <td>-1.86%</td>
+      <td>1.75x</td>
+      <td>2020-03-18</td>
+      <td>-5.21%</td>
+      <td>-2.61%</td>
+      <td>1.99x</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>9</td>
+      <td>-3.33%</td>
+      <td>-2.20%</td>
+      <td>1.51x</td>
+      <td>2020-03-12</td>
+      <td>-5.72%</td>
+      <td>-2.21%</td>
+      <td>2.59x</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>8</td>
+      <td>-5.21%</td>
+      <td>-2.87%</td>
+      <td>1.82x</td>
+      <td>2020-03-16</td>
+      <td>-11.98%</td>
+      <td>-4.35%</td>
+      <td>2.75x</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>6</td>
+      <td>-2.55%</td>
+      <td>-1.67%</td>
+      <td>1.53x</td>
+      <td>2020-03-12</td>
+      <td>-3.90%</td>
+      <td>-1.66%</td>
+      <td>2.36x</td>
+    </tr>
+    <tr>
+      <th rowspan="5">2022</th>
+      <th>RPAR</th>
+      <td>23</td>
+      <td>-1.75%</td>
+      <td>-1.65%</td>
+      <td>1.06x</td>
+      <td>2022-06-13</td>
+      <td>-3.93%</td>
+      <td>-1.54%</td>
+      <td>2.56x</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>18</td>
+      <td>-2.03%</td>
+      <td>-1.86%</td>
+      <td>1.09x</td>
+      <td>2022-06-13</td>
+      <td>-3.80%</td>
+      <td>-1.70%</td>
+      <td>2.24x</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>17</td>
+      <td>-1.88%</td>
+      <td>-1.65%</td>
+      <td>1.14x</td>
+      <td>2022-06-13</td>
+      <td>-2.99%</td>
+      <td>-1.74%</td>
+      <td>1.72x</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>20</td>
+      <td>-2.87%</td>
+      <td>-2.65%</td>
+      <td>1.08x</td>
+      <td>2022-06-13</td>
+      <td>-5.48%</td>
+      <td>-2.72%</td>
+      <td>2.01x</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>8</td>
+      <td>-2.06%</td>
+      <td>-1.93%</td>
+      <td>1.07x</td>
+      <td>2022-11-10</td>
+      <td>-3.90%</td>
+      <td>-1.50%</td>
+      <td>2.60x</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 11](rp_project_figures/figure_11.png)
 
 ### Reading Figure 11
 
@@ -606,6 +3982,381 @@ In 2020 the problem was speed: volatility jumped within days, faster than an EWM
 >
 > * Report the attribution for each series and episode.
 > * Compute the static approximation, each beta times the factor's compounded total return over the window (episode-start weights for the ERC), and say what the gap between the two attributions contains.
+
+```text
+2020, UPAR: no returns in the window
+2020, ALLW: no returns in the window
+2022, UPAR: from its first return, 2022-01-05
+2022, ALLW: no returns in the window
+```
+
+<table>
+  <caption>Day-by-day attribution: each factor's daily excess return times the full-sample daily beta (actual positions for the levered ERC), summed over the episode</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>SPY</th>
+      <th>TLT</th>
+      <th>TIP</th>
+      <th>GLD</th>
+      <th>DBC</th>
+      <th>Sum of Factors</th>
+      <th>Excess Return (sum of daily)</th>
+      <th>Residual</th>
+      <th>Intercept x Days</th>
+      <th>Unexplained</th>
+    </tr>
+    <tr>
+      <th>Episode</th>
+      <th>Series</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="4">2020</th>
+      <th>RPAR</th>
+      <td>-12.44%</td>
+      <td>4.31%</td>
+      <td>-0.51%</td>
+      <td>-0.54%</td>
+      <td>-1.42%</td>
+      <td>-10.59%</td>
+      <td>-14.58%</td>
+      <td>-3.99%</td>
+      <td>-0.34%</td>
+      <td>-3.65%</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>-34.87%</td>
+      <td>1.86%</td>
+      <td>-0.13%</td>
+      <td>-0.08%</td>
+      <td>0.82%</td>
+      <td>-32.41%</td>
+      <td>-31.10%</td>
+      <td>1.31%</td>
+      <td>-0.08%</td>
+      <td>1.39%</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>-2.24%</td>
+      <td>-1.40%</td>
+      <td>0.21%</td>
+      <td>-0.36%</td>
+      <td>-4.17%</td>
+      <td>-7.98%</td>
+      <td>-6.35%</td>
+      <td>1.63%</td>
+      <td>0.28%</td>
+      <td>1.34%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>-12.52%</td>
+      <td>3.48%</td>
+      <td>-0.19%</td>
+      <td>-0.90%</td>
+      <td>-5.96%</td>
+      <td>-16.08%</td>
+      <td>-16.08%</td>
+      <td>-0.00%</td>
+      <td>0.00%</td>
+      <td>-0.00%</td>
+    </tr>
+    <tr>
+      <th rowspan="5">2022</th>
+      <th>RPAR</th>
+      <td>-6.25%</td>
+      <td>-13.42%</td>
+      <td>-7.66%</td>
+      <td>-1.67%</td>
+      <td>1.06%</td>
+      <td>-27.96%</td>
+      <td>-33.18%</td>
+      <td>-5.22%</td>
+      <td>-2.87%</td>
+      <td>-2.35%</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>-8.59%</td>
+      <td>-21.16%</td>
+      <td>-6.73%</td>
+      <td>-2.09%</td>
+      <td>1.51%</td>
+      <td>-37.06%</td>
+      <td>-45.92%</td>
+      <td>-8.86%</td>
+      <td>-3.75%</td>
+      <td>-5.11%</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>-17.52%</td>
+      <td>-5.78%</td>
+      <td>-2.03%</td>
+      <td>-0.26%</td>
+      <td>-0.61%</td>
+      <td>-26.20%</td>
+      <td>-30.35%</td>
+      <td>-4.15%</td>
+      <td>-0.70%</td>
+      <td>-3.45%</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>-1.13%</td>
+      <td>4.36%</td>
+      <td>3.12%</td>
+      <td>-1.14%</td>
+      <td>3.11%</td>
+      <td>8.33%</td>
+      <td>30.21%</td>
+      <td>21.88%</td>
+      <td>2.39%</td>
+      <td>19.49%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>-6.44%</td>
+      <td>-12.69%</td>
+      <td>-6.96%</td>
+      <td>-3.18%</td>
+      <td>3.95%</td>
+      <td>-25.32%</td>
+      <td>-25.32%</td>
+      <td>0.00%</td>
+      <td>0.00%</td>
+      <td>0.00%</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Static approximation: each beta (episode-start position for the levered ERC) times the factor's compounded total return over the episode</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>SPY</th>
+      <th>TLT</th>
+      <th>TIP</th>
+      <th>GLD</th>
+      <th>DBC</th>
+      <th>Sum of Factors</th>
+      <th>Total Return (compounded)</th>
+    </tr>
+    <tr>
+      <th>Episode</th>
+      <th>Series</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="4">2020</th>
+      <th>RPAR</th>
+      <td>-10.86%</td>
+      <td>4.32%</td>
+      <td>-0.35%</td>
+      <td>-0.51%</td>
+      <td>-1.25%</td>
+      <td>-8.65%</td>
+      <td>-13.55%</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>-30.44%</td>
+      <td>1.86%</td>
+      <td>-0.09%</td>
+      <td>-0.08%</td>
+      <td>0.72%</td>
+      <td>-28.04%</td>
+      <td>-28.08%</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>-1.96%</td>
+      <td>-1.40%</td>
+      <td>0.14%</td>
+      <td>-0.35%</td>
+      <td>-3.67%</td>
+      <td>-7.24%</td>
+      <td>-5.94%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>-11.79%</td>
+      <td>3.36%</td>
+      <td>-0.34%</td>
+      <td>-0.65%</td>
+      <td>-5.43%</td>
+      <td>-14.84%</td>
+      <td>-15.01%</td>
+    </tr>
+    <tr>
+      <th rowspan="5">2022</th>
+      <th>RPAR</th>
+      <td>-6.28%</td>
+      <td>-11.12%</td>
+      <td>-7.23%</td>
+      <td>-1.70%</td>
+      <td>1.00%</td>
+      <td>-25.33%</td>
+      <td>-28.83%</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>-8.58%</td>
+      <td>-17.80%</td>
+      <td>-6.37%</td>
+      <td>-2.14%</td>
+      <td>1.40%</td>
+      <td>-33.48%</td>
+      <td>-37.82%</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>-17.61%</td>
+      <td>-4.79%</td>
+      <td>-1.91%</td>
+      <td>-0.26%</td>
+      <td>-0.58%</td>
+      <td>-25.15%</td>
+      <td>-27.85%</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>-1.13%</td>
+      <td>3.61%</td>
+      <td>2.95%</td>
+      <td>-1.15%</td>
+      <td>2.95%</td>
+      <td>7.22%</td>
+      <td>34.20%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>-5.27%</td>
+      <td>-10.67%</td>
+      <td>-7.65%</td>
+      <td>-2.25%</td>
+      <td>3.91%</td>
+      <td>-21.93%</td>
+      <td>-23.18%</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Static minus day-by-day attribution, summed over factors: compounding + cash + weight drift and rebalancing</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Gap (static minus dynamic)</th>
+      <th>Compounding</th>
+      <th>Cash (exposure x SHV)</th>
+      <th>Weight Drift and Rebalancing</th>
+    </tr>
+    <tr>
+      <th>Episode</th>
+      <th>Series</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="4">2020</th>
+      <th>RPAR</th>
+      <td>1.94%</td>
+      <td>1.14%</td>
+      <td>0.80%</td>
+      <td>0.00%</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>4.38%</td>
+      <td>3.69%</td>
+      <td>0.68%</td>
+      <td>-0.00%</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>0.74%</td>
+      <td>0.74%</td>
+      <td>0.00%</td>
+      <td>0.00%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>1.25%</td>
+      <td>1.75%</td>
+      <td>0.89%</td>
+      <td>-1.40%</td>
+    </tr>
+    <tr>
+      <th rowspan="5">2022</th>
+      <th>RPAR</th>
+      <td>2.63%</td>
+      <td>2.36%</td>
+      <td>0.26%</td>
+      <td>0.00%</td>
+    </tr>
+    <tr>
+      <th>UPAR</th>
+      <td>3.58%</td>
+      <td>3.21%</td>
+      <td>0.37%</td>
+      <td>-0.00%</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>1.05%</td>
+      <td>0.82%</td>
+      <td>0.23%</td>
+      <td>0.00%</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>-1.11%</td>
+      <td>-1.11%</td>
+      <td>0.00%</td>
+      <td>0.00%</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>3.39%</td>
+      <td>2.09%</td>
+      <td>0.30%</td>
+      <td>0.99%</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 12](rp_project_figures/figure_12.png)
 
 ### Reading Figure 12
 
@@ -663,6 +4414,110 @@ The static approximation multiplies each beta (the episode-start position for th
 
 > Compare `RPAR` in 2020 and 2022 using the factor paths, the attribution in 5.3, the breach rates in 5.1 and 5.2, and the rolling sums of betas from 2.3. Explain the similarities and differences in at most half a page.
 
+<table>
+  <caption>RPAR in the two episodes. Factor paths and attribution over the short windows; breach statistics over the extended windows (to 2020-04-30 and 2022-12-30)</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>2020</th>
+      <th>2022</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Trading Days</th>
+      <td>24</td>
+      <td>204</td>
+    </tr>
+    <tr>
+      <th>RPAR Total Return</th>
+      <td>-13.6%</td>
+      <td>-28.8%</td>
+    </tr>
+    <tr>
+      <th>SPY Total Return</th>
+      <td>-33.4%</td>
+      <td>-19.3%</td>
+    </tr>
+    <tr>
+      <th>TLT Total Return</th>
+      <td>14.2%</td>
+      <td>-36.6%</td>
+    </tr>
+    <tr>
+      <th>TIP Total Return</th>
+      <td>-0.6%</td>
+      <td>-13.3%</td>
+    </tr>
+    <tr>
+      <th>GLD Total Return</th>
+      <td>-3.1%</td>
+      <td>-10.1%</td>
+    </tr>
+    <tr>
+      <th>DBC Total Return</th>
+      <td>-25.0%</td>
+      <td>20.1%</td>
+    </tr>
+    <tr>
+      <th>SPY-TLT Correlation</th>
+      <td>-0.50</td>
+      <td>0.02</td>
+    </tr>
+    <tr>
+      <th>Sum of Factors (5.3)</th>
+      <td>-10.6%</td>
+      <td>-28.0%</td>
+    </tr>
+    <tr>
+      <th>Residual (5.3)</th>
+      <td>-4.0%</td>
+      <td>-5.2%</td>
+    </tr>
+    <tr>
+      <th>Historical Breach Rate (5.1)</th>
+      <td>—</td>
+      <td>12.0%</td>
+    </tr>
+    <tr>
+      <th>EWMA Breach Rate (5.1)</th>
+      <td>15.7%</td>
+      <td>9.2%</td>
+    </tr>
+    <tr>
+      <th>EWMA Realized / CVaR (5.2)</th>
+      <td>1.77</td>
+      <td>1.06</td>
+    </tr>
+    <tr>
+      <th>EWMA Worst Return / VaR (5.2)</th>
+      <td>4.31</td>
+      <td>2.56</td>
+    </tr>
+    <tr>
+      <th>Sum of Betas, Last Window Before</th>
+      <td>—</td>
+      <td>1.36</td>
+    </tr>
+    <tr>
+      <th>Sum of Betas, Windows Ending Inside</th>
+      <td>—</td>
+      <td>1.30 to 1.39</td>
+    </tr>
+    <tr>
+      <th>Sum of Betas, First Window After</th>
+      <td>1.25</td>
+      <td>1.38</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+First trailing 252-day RPAR regression ends 2020-12-14; no window ends before the 2020 episode
+```
+
+![Figure 13](rp_project_figures/figure_13.png)
+
 ### Reading Figure 13
 
 *Top: what happened in each episode.* Each line is the cumulative total return of one factor ETF through the episode, with `RPAR` in thick black. Every line starts at 0% at the close before the window. The 2020 panel covers about five weeks and the 2022 panel about ten months, and the vertical scales differ.
@@ -686,8 +4541,9 @@ The static approximation multiplies each beta (the episode-start position for th
 
 2020 tested whether `RPAR`'s diversification held in an equity crash, and it partly did. 2022 hit the scenario risk parity is most exposed to: stocks and bonds falling together while the largest weights sit in duration. The loss was twice as large, built up slowly, and came from the portfolio's holdings, not from forecasts reacting too slowly.
 
-
 # 6. Regime Drivers
+
+**The table** gathers the inputs the question names into one view per episode: factor returns, the 5.3 attribution, the 5.1 and 5.2 breach statistics, and the rolling sums of betas.
 
 ## 6.1
 
@@ -699,6 +4555,419 @@ The static approximation multiplies each beta (the episode-start position for th
 > * the three-month change in the 10-year zero-coupon yield on the `yields` sheet
 >
 > For `RPAR` over its life, and for the levered ERC portfolio and 60/40 over the full backtest, report the annualized mean, volatility and Sharpe ratio of monthly excess returns within each tercile of the driver, or on each side of zero for a correlation. The yields end 2026-07-31, so the yield driver's last month is August 2026.
+
+```text
+Yield-change terciles over the full backtest: below -0.17, between, and above +0.16 percentage points. Last yield on 2026-07-31, so the driver's last month is 2026-08.
+```
+
+<table>
+  <caption>Months in each regime</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Full backtest</th>
+      <th>RPAR's life</th>
+    </tr>
+    <tr>
+      <th>Driver</th>
+      <th>Regime</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2">Stock-Bond Correlation, 12 Months</th>
+      <th>Negative</th>
+      <td>137</td>
+      <td>15</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>87</td>
+      <td>66</td>
+    </tr>
+    <tr>
+      <th rowspan="2">Stock-Bond Correlation, 63 Days</th>
+      <th>Negative</th>
+      <td>177</td>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>47</td>
+      <td>41</td>
+    </tr>
+    <tr>
+      <th rowspan="3">10-Year Yield, 3-Month Change</th>
+      <th>Falling</th>
+      <td>75</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>Flat</th>
+      <td>74</td>
+      <td>22</td>
+    </tr>
+    <tr>
+      <th>Rising</th>
+      <td>74</td>
+      <td>36</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Full backtest: the 12-month and 63-day correlations have the same sign in 79% of months; their correlation with each other is 0.76
+RPAR's life: the 12-month and 63-day correlations have the same sign in 69% of months; their correlation with each other is 0.62
+```
+
+<table>
+  <caption>Monthly excess returns by the sign of the SPY-TLT correlation over the 12 months to the end of the previous month</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Months</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+    </tr>
+    <tr>
+      <th>Sample</th>
+      <th>Strategy</th>
+      <th>Regime</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="4">Full backtest</th>
+      <th rowspan="2">Levered ERC</th>
+      <th>Negative</th>
+      <td>137</td>
+      <td>7.02%</td>
+      <td>11.74%</td>
+      <td>0.60</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>87</td>
+      <td>5.07%</td>
+      <td>11.58%</td>
+      <td>0.44</td>
+    </tr>
+    <tr>
+      <th rowspan="2">60/40</th>
+      <th>Negative</th>
+      <td>137</td>
+      <td>7.99%</td>
+      <td>8.77%</td>
+      <td>0.91</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>87</td>
+      <td>6.20%</td>
+      <td>10.66%</td>
+      <td>0.58</td>
+    </tr>
+    <tr>
+      <th rowspan="6">RPAR's life</th>
+      <th rowspan="2">RPAR</th>
+      <th>Negative</th>
+      <td>15</td>
+      <td>10.71%</td>
+      <td>12.50%</td>
+      <td>0.86</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>66</td>
+      <td>-0.65%</td>
+      <td>13.68%</td>
+      <td>-0.05</td>
+    </tr>
+    <tr>
+      <th rowspan="2">Levered ERC</th>
+      <th>Negative</th>
+      <td>15</td>
+      <td>9.88%</td>
+      <td>14.43%</td>
+      <td>0.68</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>66</td>
+      <td>4.79%</td>
+      <td>12.09%</td>
+      <td>0.40</td>
+    </tr>
+    <tr>
+      <th rowspan="2">60/40</th>
+      <th>Negative</th>
+      <td>15</td>
+      <td>13.81%</td>
+      <td>12.74%</td>
+      <td>1.08</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>66</td>
+      <td>5.18%</td>
+      <td>10.86%</td>
+      <td>0.48</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Monthly excess returns by the sign of the SPY-TLT correlation over the 63 trading days to the end of the previous month</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Months</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+    </tr>
+    <tr>
+      <th>Sample</th>
+      <th>Strategy</th>
+      <th>Regime</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="4">Full backtest</th>
+      <th rowspan="2">Levered ERC</th>
+      <th>Negative</th>
+      <td>177</td>
+      <td>6.04%</td>
+      <td>11.53%</td>
+      <td>0.52</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>47</td>
+      <td>7.09%</td>
+      <td>12.23%</td>
+      <td>0.58</td>
+    </tr>
+    <tr>
+      <th rowspan="2">60/40</th>
+      <th>Negative</th>
+      <td>177</td>
+      <td>6.65%</td>
+      <td>9.19%</td>
+      <td>0.72</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>47</td>
+      <td>9.72%</td>
+      <td>10.78%</td>
+      <td>0.90</td>
+    </tr>
+    <tr>
+      <th rowspan="6">RPAR's life</th>
+      <th rowspan="2">RPAR</th>
+      <th>Negative</th>
+      <td>40</td>
+      <td>-4.00%</td>
+      <td>12.39%</td>
+      <td>-0.32</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>41</td>
+      <td>6.78%</td>
+      <td>14.41%</td>
+      <td>0.47</td>
+    </tr>
+    <tr>
+      <th rowspan="2">Levered ERC</th>
+      <th>Negative</th>
+      <td>40</td>
+      <td>0.72%</td>
+      <td>12.35%</td>
+      <td>0.06</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>41</td>
+      <td>10.62%</td>
+      <td>12.58%</td>
+      <td>0.84</td>
+    </tr>
+    <tr>
+      <th rowspan="2">60/40</th>
+      <th>Negative</th>
+      <td>40</td>
+      <td>2.36%</td>
+      <td>11.08%</td>
+      <td>0.21</td>
+    </tr>
+    <tr>
+      <th>Positive</th>
+      <td>41</td>
+      <td>11.09%</td>
+      <td>11.29%</td>
+      <td>0.98</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Monthly excess returns by tercile of the 10-year zero-coupon yield's change over the three months to the end of the previous month</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Months</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+    </tr>
+    <tr>
+      <th>Sample</th>
+      <th>Strategy</th>
+      <th>Regime</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="6">Full backtest</th>
+      <th rowspan="3">Levered ERC</th>
+      <th>Falling</th>
+      <td>75</td>
+      <td>7.20%</td>
+      <td>11.71%</td>
+      <td>0.61</td>
+    </tr>
+    <tr>
+      <th>Flat</th>
+      <td>74</td>
+      <td>9.05%</td>
+      <td>12.26%</td>
+      <td>0.74</td>
+    </tr>
+    <tr>
+      <th>Rising</th>
+      <td>74</td>
+      <td>3.25%</td>
+      <td>11.00%</td>
+      <td>0.30</td>
+    </tr>
+    <tr>
+      <th rowspan="3">60/40</th>
+      <th>Falling</th>
+      <td>75</td>
+      <td>7.17%</td>
+      <td>9.42%</td>
+      <td>0.76</td>
+    </tr>
+    <tr>
+      <th>Flat</th>
+      <td>74</td>
+      <td>8.14%</td>
+      <td>9.08%</td>
+      <td>0.90</td>
+    </tr>
+    <tr>
+      <th>Rising</th>
+      <td>74</td>
+      <td>6.96%</td>
+      <td>10.20%</td>
+      <td>0.68</td>
+    </tr>
+    <tr>
+      <th rowspan="9">RPAR's life</th>
+      <th rowspan="3">RPAR</th>
+      <th>Falling</th>
+      <td>22</td>
+      <td>-4.28%</td>
+      <td>10.88%</td>
+      <td>-0.39</td>
+    </tr>
+    <tr>
+      <th>Flat</th>
+      <td>22</td>
+      <td>11.87%</td>
+      <td>11.87%</td>
+      <td>1.00</td>
+    </tr>
+    <tr>
+      <th>Rising</th>
+      <td>36</td>
+      <td>0.55%</td>
+      <td>15.46%</td>
+      <td>0.04</td>
+    </tr>
+    <tr>
+      <th rowspan="3">Levered ERC</th>
+      <th>Falling</th>
+      <td>22</td>
+      <td>-1.67%</td>
+      <td>11.67%</td>
+      <td>-0.14</td>
+    </tr>
+    <tr>
+      <th>Flat</th>
+      <td>22</td>
+      <td>19.09%</td>
+      <td>11.11%</td>
+      <td>1.72</td>
+    </tr>
+    <tr>
+      <th>Rising</th>
+      <td>36</td>
+      <td>3.56%</td>
+      <td>13.44%</td>
+      <td>0.27</td>
+    </tr>
+    <tr>
+      <th rowspan="3">60/40</th>
+      <th>Falling</th>
+      <td>22</td>
+      <td>3.85%</td>
+      <td>10.61%</td>
+      <td>0.36</td>
+    </tr>
+    <tr>
+      <th>Flat</th>
+      <td>22</td>
+      <td>11.33%</td>
+      <td>9.81%</td>
+      <td>1.15</td>
+    </tr>
+    <tr>
+      <th>Rising</th>
+      <td>36</td>
+      <td>6.58%</td>
+      <td>12.55%</td>
+      <td>0.52</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 14](rp_project_figures/figure_14.png)
 
 ### Reading Figure 14
 
@@ -741,9 +5010,285 @@ The static approximation multiplies each beta (the episode-start position for th
 * **Volatility:** it differs by at most five points across regimes, so the Sharpe differences come mostly from the means.
 * **Sample size:** a regime holds 15 to 41 months over `RPAR`'s life. With so few months, a Sharpe ratio's standard error is roughly $\sqrt{12/n}$, about 0.5 to 0.9, so most of these differences are within noise.
 
+**The tables.**
+
+* ***Months in each regime:*** comes first because every Sharpe ratio in the next tables is only as reliable as the number of months behind it. It shows just 15 negative-correlation months over `RPAR`'s life, and a 22/22/36 tercile split.
+* ***The three regime tables:*** the statistics the question asks for, one table per driver.
+
 ## 6.2
 
 > Which drivers separate good months from bad, for which strategies, and does the separation hold in both samples? Compare the two drivers in one concise interpretation, including both horizons if you chose stock-bond correlation.
+
+<table>
+  <caption>Good regime against bad, in two non-overlapping samples. Correlation with Driver uses the driver's value, not its regime</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Good Regime</th>
+      <th>Good / Bad Months</th>
+      <th>Good Spells</th>
+      <th>Sharpe, Good</th>
+      <th>Sharpe, Bad</th>
+      <th>Mean Difference (Good - Bad)</th>
+      <th>t-stat</th>
+      <th>Correlation with Driver</th>
+    </tr>
+    <tr>
+      <th>Driver</th>
+      <th>Sample</th>
+      <th>Strategy</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5">Stock-Bond Correlation, 12 Months</th>
+      <th rowspan="2">Before RPAR</th>
+      <th>Levered ERC</th>
+      <td>Negative</td>
+      <td>122 / 21</td>
+      <td>7</td>
+      <td>0.58</td>
+      <td>0.59</td>
+      <td>+0.71%</td>
+      <td>+0.08</td>
+      <td>-0.01</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>Negative</td>
+      <td>122 / 21</td>
+      <td>7</td>
+      <td>0.89</td>
+      <td>0.92</td>
+      <td>-2.13%</td>
+      <td>-0.26</td>
+      <td>-0.02</td>
+    </tr>
+    <tr>
+      <th rowspan="3">RPAR's life</th>
+      <th>RPAR</th>
+      <td>Negative</td>
+      <td>15 / 66</td>
+      <td>1</td>
+      <td>0.86</td>
+      <td>-0.05</td>
+      <td>+11.36%</td>
+      <td>+0.90</td>
+      <td>-0.10</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>Negative</td>
+      <td>15 / 66</td>
+      <td>1</td>
+      <td>0.68</td>
+      <td>0.40</td>
+      <td>+5.09%</td>
+      <td>+0.37</td>
+      <td>-0.08</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>Negative</td>
+      <td>15 / 66</td>
+      <td>1</td>
+      <td>1.08</td>
+      <td>0.48</td>
+      <td>+8.63%</td>
+      <td>+0.70</td>
+      <td>-0.04</td>
+    </tr>
+    <tr>
+      <th rowspan="5">Stock-Bond Correlation, 63 Days</th>
+      <th rowspan="2">Before RPAR</th>
+      <th>Levered ERC</th>
+      <td>Negative</td>
+      <td>137 / 6</td>
+      <td>6</td>
+      <td>0.67</td>
+      <td>-2.58</td>
+      <td>+24.62%</td>
+      <td>+2.49</td>
+      <td>-0.07</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>Negative</td>
+      <td>137 / 6</td>
+      <td>6</td>
+      <td>0.92</td>
+      <td>0.05</td>
+      <td>+7.57%</td>
+      <td>+0.82</td>
+      <td>-0.05</td>
+    </tr>
+    <tr>
+      <th rowspan="3">RPAR's life</th>
+      <th>RPAR</th>
+      <td>Negative</td>
+      <td>40 / 41</td>
+      <td>8</td>
+      <td>-0.32</td>
+      <td>0.47</td>
+      <td>-10.78%</td>
+      <td>-1.04</td>
+      <td>+0.03</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>Negative</td>
+      <td>40 / 41</td>
+      <td>8</td>
+      <td>0.06</td>
+      <td>0.84</td>
+      <td>-9.90%</td>
+      <td>-1.03</td>
+      <td>+0.00</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>Negative</td>
+      <td>40 / 41</td>
+      <td>8</td>
+      <td>0.21</td>
+      <td>0.98</td>
+      <td>-8.73%</td>
+      <td>-1.01</td>
+      <td>+0.03</td>
+    </tr>
+    <tr>
+      <th rowspan="5">10-Year Yield, 3-Month Change</th>
+      <th rowspan="2">Before RPAR</th>
+      <th>Levered ERC</th>
+      <td>Falling</td>
+      <td>53 / 38</td>
+      <td>20</td>
+      <td>0.93</td>
+      <td>0.36</td>
+      <td>+7.93%</td>
+      <td>+1.10</td>
+      <td>-0.02</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>Falling</td>
+      <td>53 / 38</td>
+      <td>20</td>
+      <td>0.95</td>
+      <td>0.97</td>
+      <td>+1.23%</td>
+      <td>+0.21</td>
+      <td>+0.03</td>
+    </tr>
+    <tr>
+      <th rowspan="3">RPAR's life</th>
+      <th>RPAR</th>
+      <td>Falling</td>
+      <td>22 / 36</td>
+      <td>11</td>
+      <td>-0.39</td>
+      <td>0.04</td>
+      <td>-4.83%</td>
+      <td>-0.40</td>
+      <td>+0.07</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>Falling</td>
+      <td>22 / 36</td>
+      <td>11</td>
+      <td>-0.14</td>
+      <td>0.27</td>
+      <td>-5.24%</td>
+      <td>-0.45</td>
+      <td>+0.05</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>Falling</td>
+      <td>22 / 36</td>
+      <td>11</td>
+      <td>0.36</td>
+      <td>0.52</td>
+      <td>-2.73%</td>
+      <td>-0.26</td>
+      <td>+0.01</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Correlation of monthly excess returns with each driver and with the same quantity measured over the same month</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Yield Change, Previous 3 Months (Driver)</th>
+      <th>Yield Change, Same Month</th>
+      <th>SPY-TLT Correlation, Previous 63 Days (Driver)</th>
+      <th>SPY-TLT Correlation, Same Month</th>
+    </tr>
+    <tr>
+      <th>Sample</th>
+      <th>Strategy</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2">Before RPAR</th>
+      <th>Levered ERC</th>
+      <td>-0.02</td>
+      <td>-0.56</td>
+      <td>-0.07</td>
+      <td>-0.05</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>+0.03</td>
+      <td>-0.07</td>
+      <td>-0.05</td>
+      <td>+0.09</td>
+    </tr>
+    <tr>
+      <th rowspan="3">RPAR's life</th>
+      <th>RPAR</th>
+      <td>+0.07</td>
+      <td>-0.74</td>
+      <td>+0.03</td>
+      <td>-0.20</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>+0.05</td>
+      <td>-0.62</td>
+      <td>+0.00</td>
+      <td>-0.18</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>+0.01</td>
+      <td>-0.54</td>
+      <td>+0.03</td>
+      <td>-0.08</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 15](rp_project_figures/figure_15.png)
 
 ### Reading Figure 15
 
@@ -777,10 +5322,14 @@ The static approximation multiplies each beta (the episode-start position for th
 * **The stock-bond correlation describes the environment rather than the next month.** It is persistent, which makes each regime a few long episodes rather than many independent months. Its switch to positive from 2021 coincides with risk parity's weakest period. That fits the 5.4 diagnosis of 2022, when the bonds and TIPS stopped diversifying. As a timing signal it fails at both horizons. The 12-month correlation turned positive in April 2021, ahead of 2022, but stayed positive through the recovery, so positive months still earned the levered ERC a Sharpe ratio of 0.40. The 63-day correlation turned only after the damage had started. The same-month stock-bond correlation is only weakly related to returns (−0.20 to +0.09).
 * **Which strategies:** both drivers matter most for the duration-heavy portfolios, `RPAR` and the levered ERC, and for 60/40 only once the stock-bond hedge failed. None of the splits is strong or stable enough to justify switching allocations on.
 
-
 # 7. The Allocation
 
 Choose the evaluation criteria, cost assumptions, allocation rule, and comparison window. Different allocations and recommendations can be supported by the evidence; explain the choices that determine yours.
+
+**The tables.**
+
+* ***Good regime against bad:*** the formal test. It fixes the hypothesis in advance, uses two non-overlapping samples, and reports t-statistics and the number of separate spells, that is, how many independent episodes stand behind each regime.
+* ***Correlation with each driver and with the same quantity in the same month:*** separates "describes" from "forecasts". The same-month yield change is strongly related to returns (−0.54 to −0.74 where it matters); the drivers, known in advance, are near zero.
 
 ## 7.1
 
@@ -814,10 +5363,42 @@ Choose the evaluation criteria, cost assumptions, allocation rule, and compariso
 * **Trading: 0.10% per unit of one-way turnover** (10 basis points of the value traded).
   * *Rationale:* all five ETFs are large, exchange-listed U.S. funds. 10 basis points is a conservative allowance for half the bid-ask spread plus market impact and commissions, set high enough to cover `DBC`, the least liquid of them.
 * **Borrowing: 0.75% a year over `SHV`** on the borrowed amount (gross exposure minus net asset value), charged daily.
-  * *Source:* Interactive Brokers' IBKR Pro USD margin rates are its benchmark rate plus 1% on balances from $100,000 to $1 million, plus 0.75% from $1 million to $50 million, and plus 0.5% above that (interactivebrokers.com, Margin Rates and Financing, accessed 2026-10-30). We take the middle tier as the cost for an allocator of moderate size.
+  * *Source:* Interactive Brokers' IBKR Pro USD margin rates are its benchmark rate plus 1% on balances from \$100,000 to \$1 million, plus 0.75% from \$1 million to \$50 million, and plus 0.5% above that (interactivebrokers.com, Margin Rates and Financing, accessed 2026-10-30). We take the middle tier as the cost for an allocator of moderate size.
   * *A conservative choice:* financing through Treasury futures, as `RPAR` does, would usually be cheaper.
 
 At the 4.3 levered ERC's leverage (1.55x) and turnover (0.35 a year), these costs come to about 0.45% a year. That is below `RPAR`'s 0.52% expense ratio, so running the rule directly is not ruled out by cost.
+
+<table>
+  <caption>Pass-fail criteria declared 2026-10-30</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Rule</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Sharpe above diversification hurdle</th>
+      <td>Net Sharpe> correlation with 60/40 x 60/40's Sharpe</td>
+    </tr>
+    <tr>
+      <th>Max drawdown no deeper than 60/40's</th>
+      <td>Max drawdown>= 60/40's max drawdown</td>
+    </tr>
+    <tr>
+      <th>2022 return no worse than 60/40's</th>
+      <td>2022 calendar-year total return>= 60/40's (-16.4%)</td>
+    </tr>
+    <tr>
+      <th>Correlation with 60/40 at most 0.80</th>
+      <td>Daily return correlation with 60/40 <= 0.80</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Trading cost 0.10% per unit of one-way turnover; borrowing spread 0.75% a year over SHV on the borrowed amount
+```
 
 ## 7.2
 
@@ -855,9 +5436,187 @@ At the close of each month-end $t-1$, using only data through that close, set th
 * **The trend filter:** this targets the failure found in 5.3 and 5.4. In 2022 the bond and TIPS sleeves, ERC's largest, fell for months while the trailing covariance still showed them diversifying. 6.2 found that regime drivers known in advance do not time individual months. A trend filter makes no forecast: it steps aside once an asset has lost money over a year, and 3.2 showed a trend rule on these same ETFs captures part of `DBMF`.
 * **No `DBMF` sleeve:** it would cut the backtest to the 2020s, about six years, while the filter covers the full history.
 
+<table>
+  <caption>Trend-filtered ERC at a 10% volatility target, 2007-03-01 to 2026-10-23; costs 0.10% per unit of turnover and 0.75% a year on borrowing</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Max Drawdown</th>
+      <th>Peak Date</th>
+      <th>Trough Date</th>
+      <th>Recovery Date</th>
+      <th>2022 Return</th>
+      <th>Correlation with 60/40</th>
+      <th>Sharpe Hurdle</th>
+      <th>One-Way Turnover per Year</th>
+      <th>Average Gross Exposure</th>
+      <th>Annual Cost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Strategy, net</th>
+      <td>7.25%</td>
+      <td>8.77%</td>
+      <td>0.65</td>
+      <td>-22.74%</td>
+      <td>2020-03-06</td>
+      <td>2020-03-18</td>
+      <td>2020-08-06</td>
+      <td>-6.79%</td>
+      <td>0.39</td>
+      <td>0.24</td>
+      <td>1.33</td>
+      <td>1.06</td>
+      <td>0.33%</td>
+    </tr>
+    <tr>
+      <th>Strategy, gross</th>
+      <td>7.58%</td>
+      <td>8.77%</td>
+      <td>0.69</td>
+      <td>-22.73%</td>
+      <td>2020-03-06</td>
+      <td>2020-03-18</td>
+      <td>2020-08-06</td>
+      <td>-6.60%</td>
+      <td>0.39</td>
+      <td>0.24</td>
+      <td>1.33</td>
+      <td>1.06</td>
+      <td>0.00%</td>
+    </tr>
+    <tr>
+      <th>ERC, unlevered (4.2)</th>
+      <td>5.93%</td>
+      <td>7.20%</td>
+      <td>0.60</td>
+      <td>-17.97%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2024-07-16</td>
+      <td>-11.70%</td>
+      <td>0.60</td>
+      <td>0.38</td>
+      <td>—</td>
+      <td>1.00</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>8.70%</td>
+      <td>11.25%</td>
+      <td>0.63</td>
+      <td>-31.41%</td>
+      <td>2007-12-10</td>
+      <td>2009-03-09</td>
+      <td>2010-09-20</td>
+      <td>-16.38%</td>
+      <td>1.00</td>
+      <td>0.63</td>
+      <td>—</td>
+      <td>1.00</td>
+      <td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Leverage before the filter: median 1.59x, at the 2x cap in 19% of months. Months with net borrowing: 56%; with every asset filtered out: 1%.
+Share of months each asset was filtered out: SPY 16%, TLT 44%, TIP 37%, GLD 28%, DBC 48%
+Annual cost: trading 0.13%, financing 0.20%
+```
+
+```text
+Months in which the filter raised the forecast volatility: 6 of 236
+```
+
+<table>
+  <caption>Sensitivity to the rule's settings, net of costs, same window</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Max Drawdown</th>
+      <th>2022 Return</th>
+      <th>Correlation with 60/40</th>
+      <th>One-Way Turnover per Year</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Chosen (10%, 2x, 12-month filter)</th>
+      <td>7.25%</td>
+      <td>8.77%</td>
+      <td>0.65</td>
+      <td>-22.74%</td>
+      <td>-6.79%</td>
+      <td>0.39</td>
+      <td>1.33</td>
+    </tr>
+    <tr>
+      <th>No trend filter</th>
+      <td>7.28%</td>
+      <td>10.95%</td>
+      <td>0.52</td>
+      <td>-29.07%</td>
+      <td>-15.30%</td>
+      <td>0.58</td>
+      <td>0.48</td>
+    </tr>
+    <tr>
+      <th>8% target</th>
+      <td>6.26%</td>
+      <td>7.19%</td>
+      <td>0.65</td>
+      <td>-18.82%</td>
+      <td>-5.24%</td>
+      <td>0.39</td>
+      <td>1.12</td>
+    </tr>
+    <tr>
+      <th>12% target</th>
+      <td>8.08%</td>
+      <td>9.85%</td>
+      <td>0.66</td>
+      <td>-22.74%</td>
+      <td>-8.35%</td>
+      <td>0.38</td>
+      <td>1.45</td>
+    </tr>
+    <tr>
+      <th>1.5x cap</th>
+      <td>6.83%</td>
+      <td>7.73%</td>
+      <td>0.68</td>
+      <td>-17.24%</td>
+      <td>-6.76%</td>
+      <td>0.38</td>
+      <td>1.11</td>
+    </tr>
+    <tr>
+      <th>6-month filter</th>
+      <td>7.43%</td>
+      <td>8.46%</td>
+      <td>0.69</td>
+      <td>-22.74%</td>
+      <td>-6.92%</td>
+      <td>0.31</td>
+      <td>1.88</td>
+    </tr>
+  </tbody>
+</table>
+
+![Figure 16](rp_project_figures/figure_16.png)
+
 ### Reading Figure 16
 
-*Top: growth of $1.* Total return from 2007-03-01, net of the 7.1 costs for the strategy, on a log scale: equal vertical distances are equal percentage gains. Black is the strategy, blue the unlevered ERC from 4.2, gray 60/40. A line that ends higher compounded more. Its slope at any point is its return then.
+*Top: growth of \$1.* Total return from 2007-03-01, net of the 7.1 costs for the strategy, on a log scale: equal vertical distances are equal percentage gains. Black is the strategy, blue the unlevered ERC from 4.2, gray 60/40. A line that ends higher compounded more. Its slope at any point is its return then.
 
 *Middle: drawdowns.* How far each line sits below its own previous peak, the same measure as Figure 2. Compare depths across the whole period, not just the single worst dip.
 
@@ -915,6 +5674,8 @@ At the close of each month-end $t-1$, using only data through that close, set th
 * **Lower return than 60/40:** it earns less, so an investor who needs 60/40's return would have to run it at a higher target, with more borrowing.
 * **Fast crashes:** they remain its weak point, as March 2020 shows.
 
+**The table.** *Sensitivity to the rule's settings* changes one setting at a time, to show the result is not tuned to the chosen parameters. Its no-filter row isolates what the trend filter contributes.
+
 ## 7.3
 
 > Place your strategy beside `RPAR`, `ALLW`, `NTSX`, `DBMF`, the levered ERC portfolio from 4.3 and 60/40 on one common window you choose. Report
@@ -922,11 +5683,361 @@ At the close of each month-end $t-1$, using only data through that close, set th
 > * annualized mean and volatility, Sharpe ratio and maximum drawdown, net of your declared costs where leverage or turnover applies; add any metric needed for your criteria
 > * the pairwise correlations of daily returns on the common window
 
+<table>
+  <caption>Common window 2019-12-16 to 2026-10-23. Net of the 7.1 costs for the 7.2 strategy and the levered ERC; fund returns are net of their fees. ALLW starts 2025-03-07, so its statistics, correlation and hurdle use its own shorter sample, against 60/40 on the same dates</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>First Return</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Max Drawdown</th>
+      <th>Peak Date</th>
+      <th>Trough Date</th>
+      <th>Recovery Date</th>
+      <th>2022 Return</th>
+      <th>Correlation with 60/40</th>
+      <th>60/40 Sharpe, Same Dates</th>
+      <th>60/40 Max Drawdown, Same Dates</th>
+      <th>Sharpe Hurdle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7.2 Strategy</th>
+      <td>2019-12-16</td>
+      <td>8.16%</td>
+      <td>9.32%</td>
+      <td>0.58</td>
+      <td>-22.74%</td>
+      <td>2020-03-06</td>
+      <td>2020-03-18</td>
+      <td>2020-08-06</td>
+      <td>-6.79%</td>
+      <td>0.55</td>
+      <td>0.57</td>
+      <td>-21.02%</td>
+      <td>0.31</td>
+    </tr>
+    <tr>
+      <th>RPAR</th>
+      <td>2019-12-16</td>
+      <td>4.32%</td>
+      <td>12.56%</td>
+      <td>0.13</td>
+      <td>-30.14%</td>
+      <td>2021-11-09</td>
+      <td>2022-10-20</td>
+      <td>2026-01-26</td>
+      <td>-22.80%</td>
+      <td>0.70</td>
+      <td>0.57</td>
+      <td>-21.02%</td>
+      <td>0.40</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <td>2025-03-07</td>
+      <td>12.80%</td>
+      <td>12.10%</td>
+      <td>0.74</td>
+      <td>-8.78%</td>
+      <td>2025-04-02</td>
+      <td>2025-04-08</td>
+      <td>2025-06-02</td>
+      <td>—</td>
+      <td>0.75</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>0.63</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>2019-12-16</td>
+      <td>13.25%</td>
+      <td>19.08%</td>
+      <td>0.55</td>
+      <td>-31.34%</td>
+      <td>2021-12-27</td>
+      <td>2022-10-14</td>
+      <td>2024-06-12</td>
+      <td>-25.84%</td>
+      <td>0.97</td>
+      <td>0.57</td>
+      <td>-21.02%</td>
+      <td>0.55</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>2019-12-16</td>
+      <td>9.47%</td>
+      <td>12.46%</td>
+      <td>0.54</td>
+      <td>-20.44%</td>
+      <td>2022-10-20</td>
+      <td>2023-03-24</td>
+      <td>2025-12-19</td>
+      <td>21.53%</td>
+      <td>0.10</td>
+      <td>0.57</td>
+      <td>-21.02%</td>
+      <td>0.06</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>2019-12-16</td>
+      <td>8.60%</td>
+      <td>12.94%</td>
+      <td>0.46</td>
+      <td>-27.14%</td>
+      <td>2022-03-08</td>
+      <td>2022-10-20</td>
+      <td>2025-06-17</td>
+      <td>-18.86%</td>
+      <td>0.67</td>
+      <td>0.57</td>
+      <td>-21.02%</td>
+      <td>0.39</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>2019-12-16</td>
+      <td>9.69%</td>
+      <td>12.14%</td>
+      <td>0.57</td>
+      <td>-21.02%</td>
+      <td>2021-12-27</td>
+      <td>2022-10-14</td>
+      <td>2024-02-22</td>
+      <td>-16.38%</td>
+      <td>1.00</td>
+      <td>0.57</td>
+      <td>-21.02%</td>
+      <td>0.57</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>ALLW's window, 2025-03-07 to 2026-10-23 (411 days)</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Annualized Mean</th>
+      <th>Annualized Volatility</th>
+      <th>Sharpe Ratio</th>
+      <th>Max Drawdown</th>
+      <th>Peak Date</th>
+      <th>Trough Date</th>
+      <th>Recovery Date</th>
+      <th>Correlation with 60/40</th>
+      <th>60/40 Sharpe, Same Dates</th>
+      <th>60/40 Max Drawdown, Same Dates</th>
+      <th>Sharpe Hurdle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7.2 Strategy</th>
+      <td>13.97%</td>
+      <td>9.56%</td>
+      <td>1.06</td>
+      <td>-7.72%</td>
+      <td>2025-04-02</td>
+      <td>2025-04-08</td>
+      <td>2025-07-18</td>
+      <td>0.61</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>0.51</td>
+    </tr>
+    <tr>
+      <th>RPAR</th>
+      <td>9.64%</td>
+      <td>11.19%</td>
+      <td>0.52</td>
+      <td>-9.18%</td>
+      <td>2026-02-27</td>
+      <td>2026-10-07</td>
+      <td>—</td>
+      <td>0.73</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>0.61</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <td>12.80%</td>
+      <td>12.10%</td>
+      <td>0.74</td>
+      <td>-8.78%</td>
+      <td>2025-04-02</td>
+      <td>2025-04-08</td>
+      <td>2025-06-02</td>
+      <td>0.75</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>0.63</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>17.59%</td>
+      <td>16.65%</td>
+      <td>0.83</td>
+      <td>-12.29%</td>
+      <td>2025-03-25</td>
+      <td>2025-04-08</td>
+      <td>2025-05-12</td>
+      <td>0.96</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>0.80</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>20.83%</td>
+      <td>11.31%</td>
+      <td>1.50</td>
+      <td>-6.10%</td>
+      <td>2026-02-27</td>
+      <td>2026-03-23</td>
+      <td>2026-06-02</td>
+      <td>0.28</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>0.23</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>14.46%</td>
+      <td>10.31%</td>
+      <td>1.03</td>
+      <td>-8.34%</td>
+      <td>2025-04-02</td>
+      <td>2025-04-08</td>
+      <td>2025-06-13</td>
+      <td>0.63</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>0.52</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>12.65%</td>
+      <td>10.55%</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>2025-03-25</td>
+      <td>2025-04-08</td>
+      <td>2025-05-12</td>
+      <td>1.00</td>
+      <td>0.84</td>
+      <td>-8.15%</td>
+      <td>0.84</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Correlations of daily returns, 2019-12-16 to 2026-10-23; pairs with ALLW from 2025-03-07</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>7.2 Strategy</th>
+      <th>RPAR</th>
+      <th>ALLW</th>
+      <th>NTSX</th>
+      <th>DBMF</th>
+      <th>Levered ERC</th>
+      <th>60/40</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7.2 Strategy</th>
+      <td>1.00</td>
+      <td>0.67</td>
+      <td>0.81</td>
+      <td>0.51</td>
+      <td>0.39</td>
+      <td>0.81</td>
+      <td>0.55</td>
+    </tr>
+    <tr>
+      <th>RPAR</th>
+      <td>0.67</td>
+      <td>1.00</td>
+      <td>0.90</td>
+      <td>0.65</td>
+      <td>0.01</td>
+      <td>0.88</td>
+      <td>0.70</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <td>0.81</td>
+      <td>0.90</td>
+      <td>1.00</td>
+      <td>0.72</td>
+      <td>0.39</td>
+      <td>0.88</td>
+      <td>0.75</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <td>0.51</td>
+      <td>0.65</td>
+      <td>0.72</td>
+      <td>1.00</td>
+      <td>0.11</td>
+      <td>0.62</td>
+      <td>0.97</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <td>0.39</td>
+      <td>0.01</td>
+      <td>0.39</td>
+      <td>0.11</td>
+      <td>1.00</td>
+      <td>0.10</td>
+      <td>0.10</td>
+    </tr>
+    <tr>
+      <th>Levered ERC</th>
+      <td>0.81</td>
+      <td>0.88</td>
+      <td>0.88</td>
+      <td>0.62</td>
+      <td>0.10</td>
+      <td>1.00</td>
+      <td>0.67</td>
+    </tr>
+    <tr>
+      <th>60/40</th>
+      <td>0.55</td>
+      <td>0.70</td>
+      <td>0.75</td>
+      <td>0.97</td>
+      <td>0.10</td>
+      <td>0.67</td>
+      <td>1.00</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+Costs on the levered ERC over the common window: 0.45% a year; on the 7.2 strategy: 0.23% a year
+```
+
+![Figure 17](rp_project_figures/figure_17.png)
+
 ### Reading Figure 17
 
-*Top: growth of $1.* Each line compounds the series' total return from its first day in the window, net of fund fees, and, for the 7.2 strategy and the levered ERC, net of the 7.1 costs. A line above $1 has made money since it started. The shaded band is the 2022 episode.
+*Top: growth of \$1.* Each line compounds the series' total return from its first day in the window, net of fund fees, and, for the 7.2 strategy and the levered ERC, net of the 7.1 costs. A line above \$1 has made money since it started. The shaded band is the 2022 episode.
 
-* **`ALLW` (purple) starts at $1 on 2025-03-07,** not in 2019. Compare its slope since 2025 with the other lines, not its level.
+* **`ALLW` (purple) starts at \$1 on 2025-03-07,** not in 2019. Compare its slope since 2025 with the other lines, not its level.
 
 *Bottom left: excess mean against volatility.* The same view as Figure 1, over the common window.
 
@@ -983,9 +6094,290 @@ At the close of each month-end $t-1$, using only data through that close, set th
 * **The 7.2 strategy sits partly outside it:** 0.67 with `RPAR`, 0.81 with the levered ERC and with `ALLW`, and 0.55 with 60/40, because the filter often drops assets.
 * **Its 0.39 with `DBMF`** is the trend component they share.
 
+**The tables.**
+
+* ***`ALLW`'s window:*** puts every series on `ALLW`'s 411 days, so its short record is compared like for like rather than against longer samples.
+* ***Correlations of daily returns:*** show which products are really the same exposure.
+
 ## 7.4
 
 > Judge three things separately: the allocation rule, `RPAR`'s implementation of it, and your own design. Apply the criteria from 7.1 and say which passed. Say how much weight `ALLW`'s record can carry given its length, and name one observable result over the next year that would reverse your recommendation. Half a page.
+
+<table>
+  <caption>The 7.1 criteria, each against 60/40 over the same dates. ALLW has no 2022, so it is tested on three</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Sharpe</th>
+      <th>Hurdle</th>
+      <th>1. Sharpe</th>
+      <th>Max Drawdown</th>
+      <th>60/40 Max Drawdown</th>
+      <th>2. Drawdown</th>
+      <th>2022 Return</th>
+      <th>60/40 2022 Return</th>
+      <th>3. 2022</th>
+      <th>Correlation</th>
+      <th>4. Correlation</th>
+      <th>Passed</th>
+    </tr>
+    <tr>
+      <th>Subject</th>
+      <th>Window</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2">The rule: levered ERC, net</th>
+      <th>Full backtest</th>
+      <td>2008-02-01</td>
+      <td>2026-10-23</td>
+      <td>0.52</td>
+      <td>0.40</td>
+      <td>Pass</td>
+      <td>-27.6%</td>
+      <td>-30.8%</td>
+      <td>Pass</td>
+      <td>-18.9%</td>
+      <td>-16.4%</td>
+      <td>Fail</td>
+      <td>0.61</td>
+      <td>Pass</td>
+      <td>3 of 4</td>
+    </tr>
+    <tr>
+      <th>Common window</th>
+      <td>2019-12-16</td>
+      <td>2026-10-23</td>
+      <td>0.46</td>
+      <td>0.39</td>
+      <td>Pass</td>
+      <td>-27.1%</td>
+      <td>-21.0%</td>
+      <td>Fail</td>
+      <td>-18.9%</td>
+      <td>-16.4%</td>
+      <td>Fail</td>
+      <td>0.67</td>
+      <td>Pass</td>
+      <td>2 of 4</td>
+    </tr>
+    <tr>
+      <th>RPAR</th>
+      <th>Common window (its life)</th>
+      <td>2019-12-16</td>
+      <td>2026-10-23</td>
+      <td>0.13</td>
+      <td>0.40</td>
+      <td>Fail</td>
+      <td>-30.1%</td>
+      <td>-21.0%</td>
+      <td>Fail</td>
+      <td>-22.8%</td>
+      <td>-16.4%</td>
+      <td>Fail</td>
+      <td>0.70</td>
+      <td>Pass</td>
+      <td>1 of 4</td>
+    </tr>
+    <tr>
+      <th rowspan="2">7.2 strategy, net</th>
+      <th>Full backtest</th>
+      <td>2007-03-01</td>
+      <td>2026-10-23</td>
+      <td>0.65</td>
+      <td>0.24</td>
+      <td>Pass</td>
+      <td>-22.7%</td>
+      <td>-31.4%</td>
+      <td>Pass</td>
+      <td>-6.8%</td>
+      <td>-16.4%</td>
+      <td>Pass</td>
+      <td>0.39</td>
+      <td>Pass</td>
+      <td>4 of 4</td>
+    </tr>
+    <tr>
+      <th>Common window</th>
+      <td>2019-12-16</td>
+      <td>2026-10-23</td>
+      <td>0.58</td>
+      <td>0.31</td>
+      <td>Pass</td>
+      <td>-22.7%</td>
+      <td>-21.0%</td>
+      <td>Fail</td>
+      <td>-6.8%</td>
+      <td>-16.4%</td>
+      <td>Pass</td>
+      <td>0.55</td>
+      <td>Pass</td>
+      <td>3 of 4</td>
+    </tr>
+    <tr>
+      <th>ALLW</th>
+      <th>Its life</th>
+      <td>2025-03-07</td>
+      <td>2026-10-23</td>
+      <td>0.74</td>
+      <td>0.63</td>
+      <td>Pass</td>
+      <td>-8.8%</td>
+      <td>-8.1%</td>
+      <td>Fail</td>
+      <td>—</td>
+      <td>—</td>
+      <td>—</td>
+      <td>0.75</td>
+      <td>Pass</td>
+      <td>2 of 3</td>
+    </tr>
+    <tr>
+      <th>NTSX</th>
+      <th>Common window</th>
+      <td>2019-12-16</td>
+      <td>2026-10-23</td>
+      <td>0.55</td>
+      <td>0.55</td>
+      <td>Fail</td>
+      <td>-31.3%</td>
+      <td>-21.0%</td>
+      <td>Fail</td>
+      <td>-25.8%</td>
+      <td>-16.4%</td>
+      <td>Fail</td>
+      <td>0.97</td>
+      <td>Fail</td>
+      <td>0 of 4</td>
+    </tr>
+    <tr>
+      <th>DBMF</th>
+      <th>Common window</th>
+      <td>2019-12-16</td>
+      <td>2026-10-23</td>
+      <td>0.54</td>
+      <td>0.06</td>
+      <td>Pass</td>
+      <td>-20.4%</td>
+      <td>-21.0%</td>
+      <td>Pass</td>
+      <td>21.5%</td>
+      <td>-16.4%</td>
+      <td>Pass</td>
+      <td>0.10</td>
+      <td>Pass</td>
+      <td>4 of 4</td>
+    </tr>
+  </tbody>
+</table>
+
+```text
+ALLW: 411 days (1.63 years). 
+Standard error of its Sharpe ratio about 0.78; 
+Of its difference from 60/40's (correlation 0.75) about 0.55. 
+Years for a difference of 0.3 to reach two standard errors: about 22
+```
+
+<table>
+  <caption>Six-month stretches, by ending month, in which SPY and TLT each lost more than 10%</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>SPY</th>
+      <th>TLT</th>
+      <th>60/40</th>
+      <th>7.2 Strategy</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2022-06</th>
+      <td>-20.0%</td>
+      <td>-21.9%</td>
+      <td>-16.0%</td>
+      <td>-6.6%</td>
+    </tr>
+    <tr>
+      <th>2022-09</th>
+      <td>-20.2%</td>
+      <td>-21.6%</td>
+      <td>-15.9%</td>
+      <td>-8.8%</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <caption>Lower-risk 7.2 variants on the common window, net of costs</caption>
+  <thead>
+    <tr>
+      <th>&nbsp;</th>
+      <th>Sharpe</th>
+      <th>Hurdle</th>
+      <th>Max Drawdown</th>
+      <th>60/40 Max Drawdown</th>
+      <th>2022 Return</th>
+      <th>Correlation</th>
+      <th>1. Sharpe</th>
+      <th>2. Drawdown</th>
+      <th>3. 2022</th>
+      <th>4. Correlation</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>8% target</th>
+      <td>0.58</td>
+      <td>0.31</td>
+      <td>-18.8%</td>
+      <td>-21.0%</td>
+      <td>-5.2%</td>
+      <td>0.55</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Pass</td>
+    </tr>
+    <tr>
+      <th>1.5x cap</th>
+      <td>0.65</td>
+      <td>0.32</td>
+      <td>-17.2%</td>
+      <td>-21.0%</td>
+      <td>-6.8%</td>
+      <td>0.55</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Pass</td>
+      <td>Pass</td>
+    </tr>
+  </tbody>
+</table>
 
 **Reading criterion 1.** The Sharpe hurdle is the CAPM lecture's $\text{SR}_i = \rho\,\text{SR}_m$ with 60/40 as the benchmark. Clearing it is the same as a positive alpha in a regression of excess returns on 60/40's, up to using total-return rather than excess-return correlation (a difference of at most 0.004 here).
 
@@ -1028,3 +6420,9 @@ At the close of each month-end $t-1$, using only data through that close, set th
 * **History:** in this data it happened only in the stretches ending June and September 2022. The strategy lost 6.6% and 8.8% against about 16% for 60/40.
 * **Why not a milder test:** a milder version, with both merely falling, fired in 2015 and 2025 with small differences either way, so it would not separate the strategy from 60/40.
 * **What it would mean:** if the strategy loses more than 60/40 in a joint selloff this severe, its case over 60/40 is gone.
+
+**The tables.**
+
+* ***The criteria table:*** applies each criterion to each subject on each window, so every pass and fail above can be checked.
+* ***Six-month stretches in which `SPY` and `TLT` each lost more than 10%:*** the history behind the reversal test. It occurred only in 2022, and the strategy passed it then.
+* ***Lower-risk variants on the common window:*** the evidence behind the conditional recommendation, showing which versions pass if the common window governs.
